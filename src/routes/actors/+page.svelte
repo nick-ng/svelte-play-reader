@@ -3,7 +3,7 @@
 	import { actors } from '$lib/actors-store';
 
 	let voices: SpeechSynthesisVoice[] = [];
-	let nameFilter = 'natural; ';
+	let nameFilter = 'natural; english';
 	let sayPhrase = 'O, the Pelican. So smoothly doth he crest. A wind god!';
 
 	let genders: { [voiceURI: string]: string } = {};
@@ -22,7 +22,7 @@
 
 	$: filteredVoices = voices
 		.filter((v) =>
-			nameFilter.split(';').every((f) => v.name.toUpperCase().includes(f.toUpperCase()))
+			nameFilter.split(';').every((f) => v.name.toUpperCase().includes(f.trim().toUpperCase()))
 		)
 		.sort((a, b) => {
 			if ($actors[a.voiceURI] && !$actors[b.voiceURI]) {
