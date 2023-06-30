@@ -43,9 +43,7 @@
 	<p>{phrase}</p>
 	<button
 		class="button-default"
-		on:click={async () => {
-			const phraseWords = phrase.split(' ');
-
+		on:click={() => {
 			const utterance = new SpeechSynthesisUtterance(phrase);
 
 			let counter = 0;
@@ -54,36 +52,14 @@
 			utterance.onboundary = () => {
 				counter++;
 				speechSynthesis.pause();
+
 				utterance.voice = voices[counter % 3];
-				console.log('counter', counter);
+
 				speaker = utterance.voice.name;
 				speechSynthesis.resume();
 			};
 
 			speechSynthesis.speak(utterance);
-
-			// for (let i = 0; i < phraseWords.length; i++) {
-			// 	const word = phraseWords[i];
-
-			// 	utterance.text = word;
-			// 	utterance.voice = voices[i % 3];
-
-			// 	speechSynthesis.speak(utterance);
-
-			// 	await new Promise((resolve) => {
-			// 		utterance.onboundary = resolve;
-			// 	});
-			// }
 		}}>Test</button
 	>
-	<div>
-		<!-- {#each iframeNumbers as iframeNumber}
-			<iframe
-				src="/iframe/{iframeNumber}"
-				title={`iframe-${iframeNumber}`}
-				width="500"
-				height="200"
-			/>
-		{/each} -->
-	</div>
 </div>
