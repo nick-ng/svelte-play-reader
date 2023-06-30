@@ -3,11 +3,14 @@
 
 	let iframeNumbers: number[] = [];
 	let iframes: {
-		source: MessageEventSource | null;
+		source: MessageEventSource | Window | null;
 		iframeId: string | null;
 	}[] = [];
 
 	let voices: SpeechSynthesisVoice[] = [];
+	let speaker = '';
+
+	const phrase = 'O, the Pelican. So smoothly doth he crest. A wind god!';
 
 	onMount(() => {
 		window.addEventListener('message', (event) => {
@@ -35,32 +38,28 @@
 	});
 </script>
 
-<div>
-	{#if voices.length > 0}
-		<ul>
-			{#each iframeNumbers as iframeNumber}
-				<li>{voices[iframeNumber].name}</li>
-			{/each}
-		</ul>{/if}
+<div class="max-w-prose">
+	<p>{speaker}</p>
+	<p>{phrase}</p>
 	<button
 		class="button-default"
 		on:click={() => {
-			console.log('iframes', iframes);
-			for (let i = 0; i < 3; i++) {
-				const iframe = iframes[i];
+			const utterance = new SpeechSynthesisUtterance(phrase);
 
-				iframe.source?.postMessage({
-					// iframeId: iframe0.iframeId,
-					type: 'speak',
-					voiceURI: voices[i].voiceURI,
-					phrase: 'O, the Pelican. So smoothly doth he crest. A wind god!'
-				});
-			}
+			let counter = 0;
+			utterance.voice = voices[counter];
+			speaker = utterance.voice.name;
+			utterance.onboundary = () => {
+				counter++;
+				speechSynthesis.pause();
+
+				utterance.voice = voices[counter % 3];
+
+				speaker = utterance.voice.name;
+				speechSynthesis.resume();
+			};
+
+			speechSynthesis.speak(utterance);
 		}}>Test</button
 	>
-	<div>
-		{#each iframeNumbers as iframeNumber}
-			<iframe src="/iframe" title={`iframe-${iframeNumber}`} width="500" height="200" />
-		{/each}
-	</div>
 </div>
