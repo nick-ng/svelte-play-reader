@@ -20,9 +20,21 @@
 		});
 	});
 
-	$: filteredVoices = voices.filter((v) =>
-		nameFilter.split(';').every((f) => v.name.toUpperCase().includes(f.toUpperCase()))
-	);
+	$: filteredVoices = voices
+		.filter((v) =>
+			nameFilter.split(';').every((f) => v.name.toUpperCase().includes(f.toUpperCase()))
+		)
+		.sort((a, b) => {
+			if ($actors[a.voiceURI] && !$actors[b.voiceURI]) {
+				return 1;
+			}
+
+			if (!$actors[a.voiceURI] && $actors[b.voiceURI]) {
+				return -1;
+			}
+
+			return `${a.lang}${a.name}`.localeCompare(`${b.lang}${b.name}`);
+		});
 
 	onMount(() => {
 		voices = speechSynthesis.getVoices();
@@ -56,9 +68,9 @@
 <div>
 	Voices: {filteredVoices.length}
 </div>
-<ul>
+<div>
 	{#each filteredVoices as voice}
-		<div class="my-1 border p-2">
+		<div class="my-1 border p-2 {$actors[voice.voiceURI] ? '' : 'bg-gray-700'}">
 			<h2>{voice.name}</h2>
 			<button
 				class="button-default"
@@ -70,22 +82,14 @@
 				}}>Test ({voice.lang})</button
 			>
 
-			<form
-				on:submit={() => {
-					actors.update((prevActors) => {
-						prevActors[voice.voiceURI] = {
-							age: ages[voice.voiceURI],
-							gender: genders[voice.voiceURI],
-							fluency: fluencies[voice.voiceURI]
-						};
-
-						return prevActors;
-					});
-				}}
-			>
+			<form>
 				<div class="flex flex-row">
 					<div class="flex flex-col">
-						<h3>Gender</h3>
+						<h3>
+							Gender <span
+								>{genders[voice.voiceURI] === $actors[voice.voiceURI]?.gender ? '' : '*'}</span
+							>
+						</h3>
 						{#each ['Male', 'Female'] as gender}
 							<label>
 								<input
@@ -100,7 +104,9 @@
 						{/each}
 					</div>
 					<div class="ml-4 flex flex-col">
-						<h3>Age</h3>
+						<h3>
+							Age <span>{ages[voice.voiceURI] === $actors[voice.voiceURI]?.age ? '' : '*'}</span>
+						</h3>
 						{#each ['Child', 'Adult', 'Elderly'] as age}
 							<label>
 								<input
@@ -115,7 +121,11 @@
 						{/each}
 					</div>
 					<div class="ml-4 flex flex-col">
-						<h3>Fluency (5 = most fluent)</h3>
+						<h3>
+							Fluency (5 = most fluent) <span
+								>{fluencies[voice.voiceURI] === $actors[voice.voiceURI]?.fluency ? '' : '*'}</span
+							>
+						</h3>
 						{#each [1, 2, 3, 4, 5] as fluency}
 							<label>
 								<input
@@ -130,9 +140,23 @@
 						{/each}
 					</div>
 				</div>
-				<button class="button-default mt-1 block">Save</button>
+				<button
+					type="button"
+					class="button-default mt-1 block"
+					on:click={() => {
+						actors.update((prevActors) => {
+							prevActors[voice.voiceURI] = {
+								age: ages[voice.voiceURI],
+								gender: genders[voice.voiceURI],
+								fluency: fluencies[voice.voiceURI]
+							};
+
+							return prevActors;
+						});
+					}}>Save</button
+				>
 			</form>
 			<span>{voice.voiceURI}</span>
 		</div>
 	{/each}
-</ul>
+</div>
