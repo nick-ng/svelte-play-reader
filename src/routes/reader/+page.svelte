@@ -38,7 +38,7 @@
 	});
 </script>
 
-<div>
+<div class="max-w-prose">
 	<p>{speaker}</p>
 	<p>{phrase}</p>
 	<button

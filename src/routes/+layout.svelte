@@ -14,5 +14,5 @@
 </nav>
 <hr />
 <div class="flex flex-row justify-center">
-	<div class="max-w-prose"><slot /></div>
+	<slot />
 </div>
