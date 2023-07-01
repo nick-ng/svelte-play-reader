@@ -1,9 +1,9 @@
-type Token = {
+export type Token = {
 	type: string;
 	raw?: string;
 	value?: string;
 	feets?: string[];
-	interruptions?: { afterFeet: number; event: string }[];
+	stageDirections?: { afterFeet: number; value: string }[];
 	character?: string;
 	actScene?: { act: string; scene: number };
 	match?: ReturnType<typeof String.prototype.match>;
@@ -11,6 +11,21 @@ type Token = {
 
 const DELIMITER_0 = '\n';
 const DELIMITER_1 = /\n\n+/;
+
+const lexStageDirection = (
+	rawStageDirection: string
+): { type: 'stage-direction'; value: string } | null => {
+	const value = rawStageDirection.replace(/^\[/, '').replace(/\]$/, '');
+
+	if (value) {
+		return {
+			type: 'stage-direction',
+			value,
+		};
+	}
+
+	return null;
+};
 
 export const lexer = (rawText: string): Token[] => {
 	const tokens: Token[] = [];
@@ -34,15 +49,17 @@ export const lexer = (rawText: string): Token[] => {
 		})
 		.join(DELIMITER_0)
 		.split(DELIMITER_1)
-		.forEach((raw1) => {
-			const trimmedRaw1 = raw1.trim();
+		.forEach((rawValue) => {
+			const trimmedRawValue = rawValue.trim();
 
 			// scene start
-			const actSceneMatch = raw1.match(/Act (?<actRoman>[IVXLCDM\d]+), Scene (?<sceneNumber>\d+)/i);
+			const actSceneMatch = rawValue.match(
+				/Act (?<actRoman>[IVXLCDM\d]+), Scene (?<sceneNumber>\d+)/i
+			);
 			if (actSceneMatch) {
 				tokens.push({
 					type: 'act-scene',
-					raw: raw1,
+					raw: rawValue,
 					actScene: {
 						act: actSceneMatch?.groups?.actRoman || '',
 						scene: parseInt(actSceneMatch?.groups?.sceneNumber || '', 10),
@@ -55,12 +72,12 @@ export const lexer = (rawText: string): Token[] => {
 			}
 
 			// scene description indicator
-			if (raw1 === '---') {
+			if (rawValue === '---') {
 				isDescribingScene = false;
 				tokens.push({
 					type: 'scene-description-complete',
-					value: raw1.trim(),
-					raw: raw1,
+					value: rawValue.trim(),
+					raw: rawValue,
 				});
 
 				return;
@@ -70,8 +87,8 @@ export const lexer = (rawText: string): Token[] => {
 			if (isDescribingScene) {
 				tokens.push({
 					type: 'scene-description-item',
-					value: raw1.trim(),
-					raw: raw1,
+					value: rawValue.trim(),
+					raw: rawValue,
 				});
 
 				return;
@@ -80,48 +97,41 @@ export const lexer = (rawText: string): Token[] => {
 			// stage directions
 			if (
 				['enter', 'exeunt', 'exit'].some((direction) =>
-					trimmedRaw1.toLowerCase().startsWith(direction)
+					trimmedRawValue.toLowerCase().startsWith(direction)
 				)
 			) {
 				tokens.push({
-					type: 'stage-directions',
-					raw: raw1,
-					value: trimmedRaw1,
+					type: 'stage-direction',
+					raw: rawValue,
+					value: trimmedRawValue,
 				});
 
 				return;
 			}
 
-			// stage directions 2
-			// const stageDirectionMatch2 = trimmedRaw1.match(/^\[/);
-			// if (stageDirectionMatch2) {
-			// 	tokens.push({
-			// 		type: 'stage-directions',
-			// 		raw: raw1,
-			// 		match: stageDirectionMatch2
-			// 	});
-			// }
-
-			// @todo(nick-ng): handle "[Exit Ghost.]", in the middle of a character's lines
 			// character's line
-			const characterLineMatches = trimmedRaw1.match(/^(?<characterName>\w[\w ]+)\./i);
+			const characterLineMatches = trimmedRawValue.match(/^(?<characterName>\w[\w ]+)\./i);
 
 			if (!isDescribingScene && characterLineMatches) {
 				const character = characterLineMatches.groups?.characterName;
 
-				let interruptions: Required<Token>['interruptions'] = [];
+				let stageDirections: Required<Token>['stageDirections'] = [];
 
-				const feets = trimmedRaw1
+				const feets = trimmedRawValue
 					.replace(`${character}.`, '')
 					?.split('\n')
 					.map((a, i) => {
 						const temp = a.trim().replace(/\d+$/, '').trim().replaceAll(/ +/g, ' ');
 
 						if (temp.match(/\[.*\]/)) {
-							interruptions.push({
-								afterFeet: i - interruptions.length,
-								event: temp,
-							});
+							const temp2 = lexStageDirection(temp);
+
+							if (temp2) {
+								stageDirections.push({
+									...temp2,
+									afterFeet: i - stageDirections.length,
+								});
+							}
 
 							return '';
 						}
@@ -133,13 +143,13 @@ export const lexer = (rawText: string): Token[] => {
 				if (feets.length > 0) {
 					const token: Token = {
 						type: 'character-lines',
-						value: trimmedRaw1,
+						value: trimmedRawValue,
 						character,
 						feets,
 					};
 
-					if (interruptions.length > 0) {
-						token.interruptions = interruptions;
+					if (stageDirections.length > 0) {
+						token.stageDirections = stageDirections;
 					}
 
 					tokens.push(token);
@@ -147,19 +157,10 @@ export const lexer = (rawText: string): Token[] => {
 				}
 			}
 
-			tokens.push({ type: 'unknown', value: raw1.trim(), raw: raw1 });
+			if (rawValue) {
+				tokens.push({ type: 'unknown', raw: rawValue });
+			}
 		});
 
 	return tokens;
 };
-
-type Character = {
-	name: string;
-};
-
-type Play = {
-	dramatisPersonae: Character[];
-	scenes: { settings: {}; steps: {}[] }[];
-};
-
-const parser = (tokens: Token[]) => {};

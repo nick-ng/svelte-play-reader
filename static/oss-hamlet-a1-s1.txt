@@ -1,3 +1,5 @@
+// https://www.opensourceshakespeare.org/views/plays/play_view.php?WorkID=hamlet&Act=1&Scene=1&Scope=scene
+
 Act I, Scene 1
 
 Elsinore. A platform before the Castle.

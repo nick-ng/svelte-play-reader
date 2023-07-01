@@ -2,10 +2,12 @@
 	import { onMount } from 'svelte';
 	import { writerEditor } from '$lib/writer-store';
 	import { lexer } from '$lib/opensourceshakespeare-org/lexer';
+	import { parser } from '$lib/opensourceshakespeare-org/parser';
 
 	let fullText = $writerEditor;
 
 	$: tokens = lexer(fullText);
+	$: play = parser(tokens);
 	$: fullText, writerEditor.set(fullText);
 	$: unknownTokens = tokens.filter((t) => t.type === 'unknown');
 	$: tokensWithMatch = tokens.filter((t) => t.match);
@@ -30,7 +32,14 @@
 	<h1>Writer</h1>
 	<div>
 		<form class="sticky top-1 inline-block w-[65ch] max-w-[48vw]">
-			<textarea class="h-[80ch] w-[65ch] max-w-[48vw] resize-none p-1" bind:value={fullText} />
+			<button
+				class="button-default"
+				type="button"
+				on:click={() => {
+					console.log('hello');
+				}}>Paste</button
+			>
+			<textarea class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none p-1" bind:value={fullText} />
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
 			<p>Unknown Token Count: {unknownTokens.length}</p>
