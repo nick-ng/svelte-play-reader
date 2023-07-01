@@ -33,6 +33,7 @@ export const lexer = (rawText: string): Token[] => {
 	let isDescribingScene = false;
 
 	rawText
+		.replaceAll(/next scene ./g, '')
 		.split(/\/\*.*\*\//) // handle comments
 		.join('')
 		.split(DELIMITER_0)
@@ -94,23 +95,8 @@ export const lexer = (rawText: string): Token[] => {
 				return;
 			}
 
-			// stage directions
-			if (
-				['enter', 'exeunt', 'exit'].some((direction) =>
-					trimmedRawValue.toLowerCase().startsWith(direction)
-				)
-			) {
-				tokens.push({
-					type: 'stage-direction',
-					raw: rawValue,
-					value: trimmedRawValue,
-				});
-
-				return;
-			}
-
 			// character's line
-			const characterLineMatches = trimmedRawValue.match(/^(?<characterName>\w[\w ]+)\./i);
+			const characterLineMatches = rawValue.match(/^ +(?<characterName>\w[\w'' ]+)\./i);
 
 			if (!isDescribingScene && characterLineMatches) {
 				const character = characterLineMatches.groups?.characterName;
@@ -155,6 +141,19 @@ export const lexer = (rawText: string): Token[] => {
 					tokens.push(token);
 					return;
 				}
+			}
+
+			// stage directions
+			const tempStageDirection = lexStageDirection(trimmedRawValue);
+
+			if (tempStageDirection) {
+				tokens.push({
+					type: 'stage-direction',
+					raw: rawValue,
+					value: trimmedRawValue,
+				});
+
+				return;
 			}
 
 			if (rawValue) {

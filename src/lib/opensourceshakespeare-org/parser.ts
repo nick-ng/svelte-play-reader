@@ -4,9 +4,19 @@ type Character = {
 	name: string;
 };
 
-type Step = {
-	type: 'character-lines' | 'stage-direction';
+type StageDirection = {
+	type: 'stage-direction';
+	action: 'enter' | 'exit';
 };
+
+type Step =
+	| {
+			type: 'character-lines';
+			character: string;
+			feets: string[];
+			stageDirections?: { afterFeet: number; value: string }[];
+	  }
+	| {};
 
 type Scene = { act: string; scene: number; settings: {}; steps: {}[] };
 

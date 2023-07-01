@@ -32,19 +32,12 @@
 	<h1>Writer</h1>
 	<div>
 		<form class="sticky top-1 inline-block w-[65ch] max-w-[48vw]">
-			<button
-				class="button-default"
-				type="button"
-				on:click={() => {
-					console.log('hello');
-				}}>Paste</button
-			>
 			<textarea class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none p-1" bind:value={fullText} />
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
 			<p>Unknown Token Count: {unknownTokens.length}</p>
-			<h3>Dramatis Personae</h3>
-			<ul class="ml-5 list-disc">
+			<h3>Dramatis Personae (ordered by appearance)</h3>
+			<ul class="ml-5 list-decimal">
 				{#each Object.values(dramatisPersonae) as character}
 					<li>
 						{character.name}
