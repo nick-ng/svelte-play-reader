@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { writerEditor } from '$lib/writer-store';
 	import { lexer } from '$lib/opensourceshakespeare-org/lexer';
@@ -9,6 +9,15 @@
 	$: fullText, writerEditor.set(fullText);
 	$: unknownTokens = tokens.filter((t) => t.type === 'unknown');
 	$: tokensWithMatch = tokens.filter((t) => t.match);
+	$: dramatisPersonae = tokens
+		.filter((t) => t.type === 'character-lines')
+		.reduce((accumulator, token) => {
+			if (token.character && !accumulator[token.character]) {
+				accumulator[token.character] = { name: token.character };
+			}
+
+			return accumulator;
+		}, {} as { [characterName: string]: { name: string } });
 
 	onMount(() => {
 		writerEditor.subscribe((newWriterEditor) => {
@@ -25,6 +34,14 @@
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
 			<p>Unknown Token Count: {unknownTokens.length}</p>
+			<h3>Dramatis Personae</h3>
+			<ul class="ml-5 list-disc">
+				{#each Object.values(dramatisPersonae) as character}
+					<li>
+						{character.name}
+					</li>
+				{/each}
+			</ul>
 			<ul class="ml-5 list-disc">
 				{#each unknownTokens as token}
 					<li><pre class="w-min bg-gray-200 dark:bg-gray-700">{token.raw}</pre></li>

@@ -18,6 +18,8 @@ export const lexer = (rawText: string): Token[] => {
 	let isDescribingScene = false;
 
 	rawText
+		.split(/\/\*.*\*\//) // handle comments
+		.join('')
 		.split(DELIMITER_0)
 		.map((r) => {
 			// handle comments
@@ -113,7 +115,7 @@ export const lexer = (rawText: string): Token[] => {
 					.replace(`${character}.`, '')
 					?.split('\n')
 					.map((a, i) => {
-						const temp = a.trim().replace(/\d+$/, '').trim();
+						const temp = a.trim().replace(/\d+$/, '').trim().replaceAll(/ +/g, ' ');
 
 						if (temp.match(/\[.*\]/)) {
 							interruptions.push({
@@ -121,7 +123,7 @@ export const lexer = (rawText: string): Token[] => {
 								event: temp,
 							});
 
-							return null;
+							return '';
 						}
 
 						return temp;
@@ -132,7 +134,6 @@ export const lexer = (rawText: string): Token[] => {
 					const token: Token = {
 						type: 'character-lines',
 						value: trimmedRaw1,
-						raw: raw1,
 						character,
 						feets,
 					};
@@ -151,3 +152,14 @@ export const lexer = (rawText: string): Token[] => {
 
 	return tokens;
 };
+
+type Character = {
+	name: string;
+};
+
+type Play = {
+	dramatisPersonae: Character[];
+	scenes: { settings: {}; steps: {}[] }[];
+};
+
+const parser = (tokens: Token[]) => {};
