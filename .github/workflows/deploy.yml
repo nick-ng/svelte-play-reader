@@ -1,57 +1,31 @@
-name: Deploy to GitHub Pages
+name: Deploy Front-end
 
 on:
   push:
-    branches: "main"
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build_site:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v2
-      #   with:
-      #     version: 8
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: build
-        env:
-          BASE_PATH: "/svelte-play-reader"
-        run: |
+      - run: |
+          git config user.email nick-ng@users.noreply.github.com
+          git config user.name "${GITHUB_ACTOR}"
+          npm i
           npm run build
-          touch build/.nojekyll
-
-      - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # this should match the `pages` option in your adapter-static options
-          path: "build/"
-
-  deploy:
-    needs: build_site
-    runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v1
+          # cp -R ./build/. ./dist-front
+          cp ./build/index.html ./build/404.html
+          echo svelte-play-reader.nick.ng > ./dist-front/CNAME
+          touch .nojekyll
+          git checkout --orphan gh-pages
+          git reset
+          cp -R ./build/. ./
+          git add $(ls ./dist-front)
+          git commit -m "$(date) deploy front-end"
+          git push --force origin gh-pages
