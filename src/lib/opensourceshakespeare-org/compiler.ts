@@ -1,13 +1,4 @@
-import type {
-	Token,
-	Character,
-	StageDirection,
-	Step,
-	Scene,
-	Play,
-	CharacterLinesToken,
-	Workspace,
-} from '$lib/types';
+import type { Token, Character, Scene, CharacterLinesToken, Workspace } from '$lib/types';
 import { getNewScene, lexStageDirection, parseStageDirection } from './utils';
 
 export default class Compiler {
