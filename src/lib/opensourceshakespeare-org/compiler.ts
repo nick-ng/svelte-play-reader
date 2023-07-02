@@ -1,4 +1,13 @@
-import type { Token, Character, StageDirection, Step, Scene, Play } from '$lib/types';
+import type {
+	Token,
+	Character,
+	StageDirection,
+	Step,
+	Scene,
+	Play,
+	CharacterLinesToken,
+	Workspace,
+} from '$lib/types';
 import { getNewScene, lexStageDirection, parseStageDirection } from './utils';
 
 export default class Compiler {
@@ -75,7 +84,6 @@ export default class Compiler {
 					isDescribingScene = false;
 					this.tokens.push({
 						type: 'scene-description-complete',
-						value: rawValue.trim(),
 						raw: rawValue,
 					});
 
@@ -99,10 +107,11 @@ export default class Compiler {
 				if (!isDescribingScene && characterLineMatches) {
 					const character = characterLineMatches.groups?.characterName;
 
-					let stageDirections: Required<Token>['stageDirections'] = [];
+					let stageDirections: Required<CharacterLinesToken>['stageDirections'] = [];
 
 					const feets = trimmedRawValue
 						.replace(`${character}.`, '')
+						.replace(/\s?Exit\.$/, '')
 						?.split('\n')
 						.map((a, i) => {
 							const temp = a.trim().replace(/\d+$/, '').trim().replaceAll(/ +/g, ' ');
@@ -125,10 +134,10 @@ export default class Compiler {
 						})
 						.filter((a) => a);
 
-					if (feets.length > 0) {
-						const token: Token = {
+					if (character && feets.length > 0) {
+						const token: CharacterLinesToken = {
 							type: 'character-lines',
-							value: trimmedRawValue,
+							raw: rawValue,
 							character,
 							feets,
 						};
@@ -138,6 +147,14 @@ export default class Compiler {
 						}
 
 						this.tokens.push(token);
+
+						if (trimmedRawValue.match(/\s?Exit\.$/)) {
+							this.tokens.push({
+								type: 'stage-direction',
+								value: 'Exit.',
+							});
+						}
+
 						return;
 					}
 				}
@@ -166,88 +183,82 @@ export default class Compiler {
 	stage2 = (): this => {
 		const temp = new Set<string>();
 
-		this.tokens
-			.filter((t) => t.type === 'character-lines')
-			.forEach((characterToken) => {
-				if (characterToken?.character) {
-					temp.add(characterToken?.character);
+		this.tokens.forEach((token) => {
+			if (token.type === 'character-lines') {
+				if (token?.character) {
+					temp.add(token?.character);
 				}
-			});
+			}
+		});
 
 		this.dramatisPersonae = [...temp].map((c) => ({ name: c }));
 
-		const workSpace: { charactersOnStage: string[]; currentScene: Scene } = {
+		const workspace: Workspace = {
 			charactersOnStage: [],
+			lastSpeaker: '',
 			currentScene: getNewScene(),
 		};
 
 		this.tokens.forEach((token) => {
-			const { actScene, value } = token;
-
 			switch (token.type) {
 				case 'act-scene': {
-					workSpace.currentScene = getNewScene({ act: actScene?.act, scene: actScene?.scene });
+					const { actScene } = token;
+					workspace.currentScene = getNewScene({ act: actScene?.act, scene: actScene?.scene });
 
 					break;
 				}
 				case 'scene-description-item': {
+					const { value } = token;
 					if (value) {
-						workSpace.currentScene.settings.push(value);
+						workspace.currentScene.settings.push(value);
 					}
 
 					break;
 				}
 				case 'stage-direction': {
+					const { value } = token;
 					if (value) {
-						const temp = parseStageDirection(value, this.dramatisPersonae);
+						parseStageDirection(value, this.dramatisPersonae, workspace);
+					}
 
-						if (temp?.subType === 'movement') {
-							const { characterNames, direction, timing } = temp;
+					break;
+				}
+				case 'character-lines': {
+					let tempStart = 0;
 
-							if (direction === 'enter') {
-								if (characterNames.some((name) => workSpace.charactersOnStage.includes(name))) {
-									throw new Error(
-										`Character already on stage. Already on stage: ${workSpace.charactersOnStage.join(
-											', '
-										)}, Entering stage: ${characterNames}`
-									);
-								}
+					if (token.stageDirections) {
+						for (const stageDirection of token.stageDirections) {
+							const temp = token.feets.slice(tempStart, stageDirection.afterFeet);
 
-								workSpace.charactersOnStage.push(...characterNames);
+							tempStart = stageDirection.afterFeet;
 
-								// It's possible to find a new character at this stage who isn't in the dramatisPersonae after stage1(). Add them to the dramatisPersonae.
-								characterNames.forEach((characterName) => {
-									if (!this.dramatisPersonae.map((c) => c.name).includes(characterName)) {
-										this.dramatisPersonae.push({
-											name: characterName,
-										});
-									}
-								});
-							} else {
-								if (characterNames.length > 0) {
-									if (!characterNames.every((name) => workSpace.charactersOnStage.includes(name))) {
-										throw new Error(
-											`Character not on stage. On stage: ${workSpace.charactersOnStage.join(
-												', '
-											)}, Exiting stage: ${characterNames}`
-										);
-									}
-									workSpace.charactersOnStage = workSpace.charactersOnStage.filter(
-										(onStage) => !characterNames.includes(onStage)
-									);
-								} else if (direction === 'exit') {
-									// @todo(nick-ng): figure out who spoke last. they will leave the stage
-								} else {
-									workSpace.charactersOnStage = [];
-								}
-							}
+							workspace.currentScene.steps.push({
+								type: 'character-lines',
+								character: token.character,
+								feets: temp,
+							});
+							workspace.lastSpeaker = token.character;
 
-							workSpace.currentScene.steps.push(temp);
+							parseStageDirection(stageDirection.value, this.dramatisPersonae, workspace);
 						}
 					}
+
+					if (tempStart < token.feets.length) {
+						workspace.currentScene.steps.push({
+							type: 'character-lines',
+							character: token.character,
+							feets: token.feets.slice(tempStart, token.feets.length),
+						});
+
+						workspace.lastSpeaker = token.character;
+					}
+
+					break;
 				}
 			}
 		});
+
+		this.scenes.push(workspace.currentScene);
 
 		return this;
 	};

@@ -22,7 +22,6 @@ jobs:
           # cp -R ./build/. ./dist-front
           cp ./build/index.html ./build/404.html
           echo svelte-play-reader.nick.ng > ./build/CNAME
-
           git checkout --orphan gh-pages
           git reset
           cp -R ./build/. ./
