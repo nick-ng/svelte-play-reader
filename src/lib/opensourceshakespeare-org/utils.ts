@@ -36,7 +36,7 @@ export const parseStageDirection = (
 
 		let characterNames = [];
 
-		// @todo(nick-ng): what if an unknown character enters with a known character?
+		// @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
 		// if we matched some characters, they are the ones who enter/exit the stage
 		if (matchingCharacterNames.length > 0) {
 			characterNames = matchingCharacterNames;

@@ -47,7 +47,7 @@
 </script>
 
 <div class="max-w-prose">
-	<h1>Actors</h1>
+	<h1>Cast</h1>
 
 	<div class="sticky top-0 flex flex-row items-end bg-white py-1 dark:bg-gray-800">
 		<div>
@@ -149,7 +149,7 @@
 								prevActors[voice.voiceURI] = {
 									age: ages[voice.voiceURI],
 									gender: genders[voice.voiceURI],
-									fluency: fluencies[voice.voiceURI]
+									fluency: fluencies[voice.voiceURI],
 								};
 
 								return prevActors;

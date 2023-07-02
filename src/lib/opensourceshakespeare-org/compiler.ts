@@ -1,4 +1,12 @@
-import type { Token, Character, StageDirection, Step, Scene, Play } from '$lib/types';
+import type {
+	Token,
+	Character,
+	StageDirection,
+	Step,
+	Scene,
+	Play,
+	CharacterLinesToken,
+} from '$lib/types';
 import { getNewScene, lexStageDirection, parseStageDirection } from './utils';
 
 export default class Compiler {
@@ -75,7 +83,6 @@ export default class Compiler {
 					isDescribingScene = false;
 					this.tokens.push({
 						type: 'scene-description-complete',
-						value: rawValue.trim(),
 						raw: rawValue,
 					});
 
@@ -99,7 +106,7 @@ export default class Compiler {
 				if (!isDescribingScene && characterLineMatches) {
 					const character = characterLineMatches.groups?.characterName;
 
-					let stageDirections: Required<Token>['stageDirections'] = [];
+					let stageDirections: Required<CharacterLinesToken>['stageDirections'] = [];
 
 					const feets = trimmedRawValue
 						.replace(`${character}.`, '')
@@ -125,10 +132,10 @@ export default class Compiler {
 						})
 						.filter((a) => a);
 
-					if (feets.length > 0) {
-						const token: Token = {
+					if (character && feets.length > 0) {
+						const token: CharacterLinesToken = {
 							type: 'character-lines',
-							value: trimmedRawValue,
+							raw: rawValue,
 							character,
 							feets,
 						};
@@ -166,13 +173,13 @@ export default class Compiler {
 	stage2 = (): this => {
 		const temp = new Set<string>();
 
-		this.tokens
-			.filter((t) => t.type === 'character-lines')
-			.forEach((characterToken) => {
-				if (characterToken?.character) {
-					temp.add(characterToken?.character);
+		this.tokens.forEach((token) => {
+			if (token.type === 'character-lines') {
+				if (token?.character) {
+					temp.add(token?.character);
 				}
-			});
+			}
+		});
 
 		this.dramatisPersonae = [...temp].map((c) => ({ name: c }));
 
@@ -182,15 +189,15 @@ export default class Compiler {
 		};
 
 		this.tokens.forEach((token) => {
-			const { actScene, value } = token;
-
 			switch (token.type) {
 				case 'act-scene': {
+					const { actScene } = token;
 					workSpace.currentScene = getNewScene({ act: actScene?.act, scene: actScene?.scene });
 
 					break;
 				}
 				case 'scene-description-item': {
+					const { value } = token;
 					if (value) {
 						workSpace.currentScene.settings.push(value);
 					}
@@ -198,6 +205,7 @@ export default class Compiler {
 					break;
 				}
 				case 'stage-direction': {
+					const { value } = token;
 					if (value) {
 						const temp = parseStageDirection(value, this.dramatisPersonae);
 
@@ -245,9 +253,20 @@ export default class Compiler {
 							workSpace.currentScene.steps.push(temp);
 						}
 					}
+
+					break;
+				}
+				case 'character-lines': {
+					let tempStart = 0;
+
+					workSpace.currentScene.steps;
+
+					break;
 				}
 			}
 		});
+
+		this.scenes.push(workSpace.currentScene);
 
 		return this;
 	};
