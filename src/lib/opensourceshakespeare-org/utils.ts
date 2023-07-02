@@ -1,0 +1,88 @@
+import type { Character, Scene, StageDirection } from '$lib/types';
+
+export const lexStageDirection = (
+	rawStageDirection: string
+): { type: 'stage-direction'; value: string } | null => {
+	const value = rawStageDirection.replace(/^\[/, '').replace(/\]$/, '');
+
+	if (value) {
+		return {
+			type: 'stage-direction',
+			value,
+		};
+	}
+
+	return null;
+};
+
+export const parseStageDirection = (
+	stageDirectionValue: string,
+	dramatisPersonae: Character[]
+): StageDirection | null => {
+	// check if it's a movement stage direction and which direction.
+	const movmentMatch = stageDirectionValue.match(/(Enter)|(Exit)|(Exeunt)/);
+
+	const matchingCharacterNames: string[] = [];
+
+	// check if there are any named characters in the stage direction.
+	dramatisPersonae.forEach((character) => {
+		if (stageDirectionValue.includes(character.name)) {
+			matchingCharacterNames.push(character.name);
+		}
+	});
+
+	if (movmentMatch) {
+		const direction = movmentMatch[0].toLowerCase() as 'enter' | 'exit' | 'exeunt';
+
+		let characterNames = [];
+
+		// @todo(nick-ng): what if an unknown character enters with a known character?
+		// if we matched some characters, they are the ones who enter/exit the stage
+		if (matchingCharacterNames.length > 0) {
+			characterNames = matchingCharacterNames;
+		} else {
+			if (direction === 'enter') {
+				// if characters enter the scene, they must be identified in the stage direction. try and find who they are.
+				const characterMatch = stageDirectionValue.match(/Enter (?<character>\w+)./);
+
+				if (characterMatch?.groups?.character) {
+					characterNames.push(characterMatch.groups.character);
+				} else {
+					throw new Error(
+						`Error when parsing stage direction. No characters entered. Stage direction: ${stageDirectionValue}`
+					);
+				}
+			} else {
+				// only characters already on stage can exit/exeunt. if the stage direction is exactly "Exit." or "Exeunt.", you can figure out who exits.
+				// any character who entered the stage will already be in the dramatisPersonae or will be added as they are discovered. if we didn't match any characters and the stage direction is not exactly "Exit." or "Exeunt.", it means the script is asking for an unknown character to exit the stage.
+				if (!stageDirectionValue.match(/(Exit)|(Exeunt)\.?/)) {
+					throw new Error(
+						`Error when parsing stage direction. Unknown character to leave the stage. Stage direction: ${stageDirectionValue}`
+					);
+				}
+			}
+		}
+
+		const isSequential = !!stageDirectionValue.match(/(first)|(then)/i);
+
+		return {
+			type: 'stage-direction',
+			subType: 'movement',
+			direction,
+			characterNames,
+			timing: isSequential ? 'sequential' : 'simultaneous',
+		};
+	}
+
+	return null;
+};
+
+export const getNewScene = (partialScene: Partial<Scene> = {}): Scene => {
+	return {
+		act: '',
+		scene: -1,
+		settings: [],
+		steps: [],
+		...partialScene,
+	};
+};
