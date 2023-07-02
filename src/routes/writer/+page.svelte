@@ -1,25 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { writerEditor } from '$lib/writer-store';
-	import { lexer } from '$lib/opensourceshakespeare-org/lexer';
-	import { parser } from '$lib/opensourceshakespeare-org/parser';
+
+	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
 
 	let fullText = $writerEditor;
 
-	$: tokens = lexer(fullText);
-	$: play = parser(tokens);
+	$: compiler = new OSSCompiler(fullText);
 	$: fullText, writerEditor.set(fullText);
-	$: unknownTokens = tokens.filter((t) => t.type === 'unknown');
-	$: tokensWithMatch = tokens.filter((t) => t.match);
-	$: dramatisPersonae = tokens
-		.filter((t) => t.type === 'character-lines')
-		.reduce((accumulator, token) => {
-			if (token.character && !accumulator[token.character]) {
-				accumulator[token.character] = { name: token.character };
-			}
-
-			return accumulator;
-		}, {} as { [characterName: string]: { name: string } });
+	$: unknownTokens = compiler.tokens.filter((t) => t.type === 'unknown');
+	$: tokensWithMatch = compiler.tokens.filter((t) => t.match);
 
 	onMount(() => {
 		writerEditor.subscribe((newWriterEditor) => {
@@ -35,26 +25,31 @@
 			<textarea class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none p-1" bind:value={fullText} />
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
-			<p>Unknown Token Count: {unknownTokens.length}</p>
 			<h3>Dramatis Personae (ordered by appearance)</h3>
-			<ul class="ml-5 list-decimal">
-				{#each Object.values(dramatisPersonae) as character}
+			<ul class="ml-8 list-decimal">
+				{#each compiler.dramatisPersonae as character}
 					<li>
 						{character.name}
 					</li>
 				{/each}
 			</ul>
-			<ul class="ml-5 list-disc">
-				{#each unknownTokens as token}
-					<li><pre class="w-min bg-gray-200 dark:bg-gray-700">{token.raw}</pre></li>
-				{/each}
-			</ul>
-			<ul class="ml-5 list-disc">
-				{#each tokensWithMatch as token}
-					<li><pre>{JSON.stringify(token, null, '  ')}</pre></li>
-				{/each}
-			</ul>
-			<pre>{JSON.stringify(tokens, null, '  ')}</pre>
+			<details open={tokensWithMatch.length > 0}>
+				<summary>Debug</summary>
+				<details open>
+					<summary>Tokens - Unknown Count: {unknownTokens.length}</summary>
+					<ul class="ml-5 list-disc">
+						{#each tokensWithMatch as token}
+							<li><pre>{JSON.stringify(token, null, '  ')}</pre></li>
+						{/each}
+					</ul>
+					<ul class="ml-8 list-disc">
+						{#each unknownTokens as token}
+							<li><pre class="w-min bg-gray-200 dark:bg-gray-700">{token.raw}</pre></li>
+						{/each}
+					</ul>
+					<pre>{JSON.stringify(compiler.tokens, null, '  ')}</pre>
+				</details>
+			</details>
 		</div>
 	</div>
 </div>
