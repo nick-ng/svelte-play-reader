@@ -21,7 +21,7 @@ jobs:
           npm run build
           # cp -R ./build/. ./dist-front
           cp ./build/index.html ./build/404.html
-          echo svelte-play-reader.nick.ng > ./dist-front/CNAME
+          echo svelte-play-reader.nick.ng > ./build/CNAME
           touch .nojekyll
           git checkout --orphan gh-pages
           git reset
