@@ -20,8 +20,10 @@ export default class Compiler {
 		try {
 			this.stage1();
 			this.stage2();
-		} catch (e) {
-			console.log('e', e);
+		} catch (err) {
+			if (err instanceof Error) {
+				this.error = err.message;
+			}
 		}
 	}
 
@@ -92,7 +94,7 @@ export default class Compiler {
 				}
 
 				// character's line
-				const characterLineMatches = rawValue.match(/^ +(?<characterName>\w[\w'' ]+)\./i);
+				const characterLineMatches = rawValue.match(/^ +(?<characterName>\w[\w'' ]*)\./i);
 
 				if (!isDescribingScene && characterLineMatches) {
 					const character = characterLineMatches.groups?.characterName;
@@ -197,18 +199,13 @@ export default class Compiler {
 				}
 				case 'stage-direction': {
 					if (value) {
-						const temp = parseStageDirection(
-							value,
-							this.dramatisPersonae,
-							workSpace.charactersOnStage
-						);
+						const temp = parseStageDirection(value, this.dramatisPersonae);
 
 						if (temp?.subType === 'movement') {
 							const { characterNames, direction, timing } = temp;
 
 							if (direction === 'enter') {
 								if (characterNames.some((name) => workSpace.charactersOnStage.includes(name))) {
-									// @todo(nick-ng): move these errors into parseStageDirection()
 									throw new Error(
 										`Character already on stage. Already on stage: ${workSpace.charactersOnStage.join(
 											', '
@@ -216,25 +213,33 @@ export default class Compiler {
 									);
 								}
 
-								console.log('characterNames', characterNames);
-
 								workSpace.charactersOnStage.push(...characterNames);
 
-								console.log('a workSpace.charactersOnStage', workSpace.charactersOnStage);
+								// It's possible to find a new character at this stage who isn't in the dramatisPersonae after stage1(). Add them to the dramatisPersonae.
+								characterNames.forEach((characterName) => {
+									if (!this.dramatisPersonae.map((c) => c.name).includes(characterName)) {
+										this.dramatisPersonae.push({
+											name: characterName,
+										});
+									}
+								});
 							} else {
-								if (!characterNames.every((name) => workSpace.charactersOnStage.includes(name))) {
-									throw new Error(
-										`Character not on stage. On stage: ${workSpace.charactersOnStage.join(
-											', '
-										)}, Exiting stage: ${characterNames}`
+								if (characterNames.length > 0) {
+									if (!characterNames.every((name) => workSpace.charactersOnStage.includes(name))) {
+										throw new Error(
+											`Character not on stage. On stage: ${workSpace.charactersOnStage.join(
+												', '
+											)}, Exiting stage: ${characterNames}`
+										);
+									}
+									workSpace.charactersOnStage = workSpace.charactersOnStage.filter(
+										(onStage) => !characterNames.includes(onStage)
 									);
+								} else if (direction === 'exit') {
+									// @todo(nick-ng): figure out who spoke last. they will leave the stage
+								} else {
+									workSpace.charactersOnStage = [];
 								}
-
-								workSpace.charactersOnStage = workSpace.charactersOnStage.filter(
-									(onStage) => !characterNames.includes(onStage)
-								);
-
-								console.log('workSpace.charactersOnStage', workSpace.charactersOnStage);
 							}
 
 							workSpace.currentScene.steps.push(temp);

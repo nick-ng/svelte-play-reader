@@ -17,36 +17,34 @@ export const lexStageDirection = (
 
 export const parseStageDirection = (
 	stageDirectionValue: string,
-	dramatisPersonae: Character[],
-	charactersOnStage: string[]
+	dramatisPersonae: Character[]
 ): StageDirection | null => {
+	// check if it's a movement stage direction and which direction.
 	const movmentMatch = stageDirectionValue.match(/(Enter)|(Exit)|(Exeunt)/);
 
+	const matchingCharacterNames: string[] = [];
+
+	// check if there are any named characters in the stage direction.
+	dramatisPersonae.forEach((character) => {
+		if (stageDirectionValue.includes(character.name)) {
+			matchingCharacterNames.push(character.name);
+		}
+	});
+
 	if (movmentMatch) {
-		const matchingCharacterNames: string[] = [];
-
-		dramatisPersonae.forEach((character) => {
-			if (stageDirectionValue.includes(character.name)) {
-				console.log('stageDirectionValue', stageDirectionValue);
-				console.log('character.name', character.name);
-				matchingCharacterNames.push(character.name);
-			}
-		});
-
-		console.log('aa', matchingCharacterNames);
-
-		const direction = movmentMatch[0] === 'Enter' ? 'enter' : 'exit';
+		const direction = movmentMatch[0].toLowerCase() as 'enter' | 'exit' | 'exeunt';
 
 		let characterNames = [];
 
-		if (matchingCharacterNames.length < 0) {
+		// @todo(nick-ng): what if an unknown character enters with a known character?
+		// if we matched some characters, they are the ones who enter/exit the stage
+		if (matchingCharacterNames.length > 0) {
 			characterNames = matchingCharacterNames;
 		} else {
-			// @todo(nick-ng): what if an unknown character enters with a known character?
 			if (direction === 'enter') {
+				// if characters enter the scene, they must be identified in the stage direction. try and find who they are.
 				const characterMatch = stageDirectionValue.match(/Enter (?<character>\w+)./);
-				console.log('no characters', stageDirectionValue);
-				console.log('characterMatch', characterMatch);
+
 				if (characterMatch?.groups?.character) {
 					characterNames.push(characterMatch.groups.character);
 				} else {
@@ -55,19 +53,18 @@ export const parseStageDirection = (
 					);
 				}
 			} else {
-				if (charactersOnStage.length === 0) {
+				// only characters already on stage can exit/exeunt. if the stage direction is exactly "Exit." or "Exeunt.", you can figure out who exits.
+				// any character who entered the stage will already be in the dramatisPersonae or will be added as they are discovered. if we didn't match any characters and the stage direction is not exactly "Exit." or "Exeunt.", it means the script is asking for an unknown character to exit the stage.
+				if (!stageDirectionValue.match(/(Exit)|(Exeunt)\.?/)) {
 					throw new Error(
-						`Error when parsing stage direction. No characters on stage to exit. Stage direction: ${stageDirectionValue}`
+						`Error when parsing stage direction. Unknown character to leave the stage. Stage direction: ${stageDirectionValue}`
 					);
 				}
-
-				characterNames.push(...charactersOnStage);
 			}
 		}
 
 		const isSequential = !!stageDirectionValue.match(/(first)|(then)/i);
 
-		// console.log('movementMatch', movmentMatch);
 		return {
 			type: 'stage-direction',
 			subType: 'movement',

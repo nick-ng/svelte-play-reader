@@ -25,6 +25,10 @@
 			<textarea class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none p-1" bind:value={fullText} />
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
+			{#if compiler.error}
+				<h3>Error</h3>
+				<p>compiler.error</p>
+			{/if}
 			<h3>Dramatis Personae (ordered by appearance)</h3>
 			<ul class="ml-8 list-decimal">
 				{#each compiler.dramatisPersonae as character}

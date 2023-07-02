@@ -16,7 +16,7 @@ export type Character = {
 export type MovementStageDirection = {
 	type: 'stage-direction';
 	subType: 'movement';
-	direction: 'enter' | 'exit';
+	direction: 'enter' | 'exit' | 'exeunt';
 	timing: 'simultaneous' | 'sequential';
 	characterNames: string[];
 };
