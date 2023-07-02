@@ -82,3 +82,11 @@ Version=1|
 - src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
 - src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
 - src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
+
+- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
+- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
+- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
+
+- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
+- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
+- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
