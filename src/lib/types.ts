@@ -42,6 +42,8 @@ export type Token =
 	| SceneDescriptionCompleteToken
 	| UnknownToken;
 
+export type Workspace = { charactersOnStage: string[]; lastSpeaker: string; currentScene: Scene };
+
 export type Character = {
 	name: string;
 };
@@ -67,11 +69,18 @@ export type Step =
 			type: 'character-lines';
 			character: string;
 			feets: string[];
-			stageDirections?: { afterFeet: number; value: string }[];
 	  }
-	| {};
+	| {
+			type: 'stage-direction';
+			subType: 'movement';
+			direction: 'enter' | 'exit' | 'exeunt';
+			characterNames: string[];
+			timing: 'sequential' | 'simultaneous';
+			charactersOnStage0?: string[];
+			charactersOnStage1?: string[];
+	  };
 
-export type Scene = { act: string; scene: number; settings: string[]; steps: {}[] };
+export type Scene = { act: string; scene: number; settings: string[]; steps: Step[] };
 
 export type Play = {
 	dramatisPersonae: Character[];
