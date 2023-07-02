@@ -3,7 +3,7 @@
 	import { actors } from '$lib/actors-store';
 
 	let voices: SpeechSynthesisVoice[] = [];
-	let nameFilter = 'natural; english';
+	let nameFilter = navigator.userAgent.toLowerCase().includes('edge') ? 'natural; english' : '';
 	let sayPhrase = 'O, the Pelican. So smoothly doth he crest. A wind god!';
 
 	let genders: { [voiceURI: string]: string } = {};
@@ -71,7 +71,7 @@
 	</div>
 	<div>
 		{#each filteredVoices as voice}
-			<div class="my-1 border p-2 {$actors[voice.voiceURI] ? '' : 'bg-gray-700'}">
+			<div class="my-1 border p-2 {$actors[voice.voiceURI] ? '' : 'bg-gray-100 dark:bg-gray-700'}">
 				<h2>{voice.name}</h2>
 				<button
 					class="button-default"
