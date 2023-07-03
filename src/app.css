@@ -15,7 +15,7 @@
 
 	input[type='text'],
 	textarea {
-		@apply rounded border border-gray-200 bg-white text-black dark:border-gray-600 dark:bg-gray-800 dark:text-white;
+		@apply rounded border border-gray-200 bg-white px-0.5 text-black dark:border-gray-600 dark:bg-gray-800 dark:text-white;
 	}
 
 	a {

@@ -53,13 +53,7 @@
 	<div class="sticky top-0 py-1">
 		<div class="flex flex-row items-end bg-white dark:bg-gray-800">
 			<div>
-				<label
-					>Filter: <input
-						class="px-0.5"
-						type="text"
-						bind:value={$optionsStore.auditionNameFilter}
-					/></label
-				>
+				<label>Filter: <input type="text" bind:value={$optionsStore.auditionNameFilter} /></label>
 				<div class="block">Phrase:</div>
 				<textarea class="block h-40 w-72 resize-none" bind:value={$optionsStore.auditionPhrase} />
 			</div>
