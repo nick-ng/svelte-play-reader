@@ -1,27 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { writerEditorStore } from '$lib/writer-store';
 
 	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
 
-	let fullText = $writerEditorStore;
-
-	$: compiler = new OSSCompiler(fullText);
-	$: fullText, writerEditorStore.set(fullText);
+	$: compiler = new OSSCompiler($writerEditorStore);
 	$: unknownTokens = compiler.tokens.filter((t) => t.type === 'unknown');
-
-	onMount(() => {
-		writerEditorStore.subscribe((newWriterEditor) => {
-			fullText = newWriterEditor;
-		});
-	});
 </script>
 
 <div>
 	<h1>Write</h1>
 	<div>
 		<form class="sticky top-1 inline-block w-[65ch] max-w-[48vw]">
-			<textarea class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none" bind:value={fullText} />
+			<textarea
+				class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none"
+				bind:value={$writerEditorStore}
+			/>
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
 			{#if compiler.error}
