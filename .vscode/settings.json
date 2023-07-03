@@ -6,5 +6,6 @@
 		"editor.unicodeHighlight.invisibleCharacters": false,
 		"files.trimTrailingWhitespace": false,
 		"editor.trimAutoWhitespace": false
-	}
+	},
+	"eslint.validate": ["*"]
 }
