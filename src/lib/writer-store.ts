@@ -18,10 +18,10 @@ if (browser) {
 	} catch (_e) {}
 }
 
-export const writerEditor = writable<string>(currentWriterEditor);
+export const writerEditorStore = writable<string>(currentWriterEditor);
 
 if (browser) {
-	writerEditor.subscribe((newWriterEditor) => {
+	writerEditorStore.subscribe((newWriterEditor) => {
 		localStorage.setItem(WRITER_EDITOR_LOCAL_STORAGE_KEY, newWriterEditor);
 	});
 
@@ -29,7 +29,7 @@ if (browser) {
 		(async () => {
 			const res = await fetch('/oss-hamlet-a1-s1.txt');
 
-			writerEditor.set(await res.text());
+			writerEditorStore.set(await res.text());
 		})();
 	}
 }

@@ -20,7 +20,7 @@ if (browser) {
 	} catch (_e) {}
 }
 
-export const actors = writable<{
+export const actorsStore = writable<{
 	[voiceURI: string]: {
 		gender: string;
 		age: string;
@@ -29,7 +29,7 @@ export const actors = writable<{
 }>(storedActors);
 
 if (browser) {
-	actors.subscribe((newActors) => {
+	actorsStore.subscribe((newActors) => {
 		localStorage.setItem(ACTORS_LOCAL_STORAGE_KEY, JSON.stringify(newActors));
 	});
 }

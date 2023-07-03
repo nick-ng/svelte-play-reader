@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { writerEditor } from '$lib/writer-store';
+	import { writerEditorStore } from '$lib/writer-store';
 
 	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
 
-	let fullText = $writerEditor;
+	let fullText = $writerEditorStore;
 
 	$: compiler = new OSSCompiler(fullText);
-	$: fullText, writerEditor.set(fullText);
+	$: fullText, writerEditorStore.set(fullText);
 	$: unknownTokens = compiler.tokens.filter((t) => t.type === 'unknown');
-	$: tokensWithMatch = compiler.tokens.filter((t) => t.match);
 
 	onMount(() => {
-		writerEditor.subscribe((newWriterEditor) => {
+		writerEditorStore.subscribe((newWriterEditor) => {
 			fullText = newWriterEditor;
 		});
 	});
@@ -37,12 +36,12 @@
 					</li>
 				{/each}
 			</ul>
-			<details open={tokensWithMatch.length > 0}>
+			<details open={unknownTokens.length > 0}>
 				<summary>Debug</summary>
 				<details open>
 					<summary>Tokens - Unknown Count: {unknownTokens.length}</summary>
 					<ul class="ml-5 list-disc">
-						{#each tokensWithMatch as token}
+						{#each unknownTokens as token}
 							<li><pre>{JSON.stringify(token, null, '  ')}</pre></li>
 						{/each}
 					</ul>
