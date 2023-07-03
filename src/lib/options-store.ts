@@ -21,8 +21,6 @@ if (browser) {
 	try {
 		const storedOptionsString = localStorage.getItem(OPTIONS_LOCAL_STORAGE_KEY);
 
-		console.log('storedOptionsString', storedOptionsString);
-
 		if (typeof storedOptionsString !== 'string') {
 			storedOptions.auditionNameFilter = navigator.userAgent.toLowerCase().includes('edge')
 				? 'natural; english'
