@@ -27,7 +27,7 @@ You can preview the production build with `npm run preview`.
 
 Powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte)
 
-## Todos
+## ToDos
 
 - Use SSML to handle iambic pentameter
 
@@ -44,59 +44,7 @@ Version=1|
 <mstts:express-as style="chat">也可以合成多角色多情感的有声<prosody contour="(49%, -40%)">书</prosody>，例如：</mstts:express-as></voice><voice name="zh-CN-YunyeNeural">黛玉冷笑道：</voice><voice name="zh-CN-XiaoxiaoNeural"><s /><mstts:express-as style="disgruntled">“我说呢，亏了绊住，不然，早就飞了来了。”</mstts:express-as><s /> </voice><voice name="zh-CN-YunyeNeural">宝玉道：</voice><voice name="zh-CN-YunxiNeural">“只许和你玩，替你解闷。不过偶然到他那里，就说这些闲话。”</voice><voice name="zh-CN-XiaoxiaoNeural"><mstts:express-as style="angry">”好没意思的话！去不去，关我什么事儿？又没叫你替我解闷儿，还许你<mstts:ttsbreak strength="none" />从此<prosody contour="(24%, +49%) (59%, -2%)">不</prosody><prosody rate="-15.00%" contour="(24%, +49%) (59%, -2%)">理</prosody><prosody contour="(24%, +49%) (59%, -2%)">我呢</prosody>！”</mstts:express-as></voice><voice name="zh-CN-YunyeNeural"><s />说着，便赌气回房去了。</voice></speak>
 ```
 
-### Todo Comments
-
-
-
-- src/lib/opensourceshakespeare-org/lexer.ts:103: @todo(nick-ng): handle "[Exit Ghost.]", in the middle of a character's lines
-
-- src/lib/opensourceshakespeare-org/lexer.ts:103: @todo(nick-ng): handle "[Exit Ghost.]", in the middle of a character's lines
-
-- src/lib/opensourceshakespeare-org/lexer.ts:105: @todo(nick-ng): handle "[Exit Ghost.]", in the middle of a character's lines
-
-- src/lib/opensourceshakespeare-org/lexer.ts:105: @todo(nick-ng): handle "[Exit Ghost.]", in the middle of a character's lines
-
-
-
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:239: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:117: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/compiler.ts:247: @todo(nick-ng): figure out who spoke last. they will leave the stage
-- src/lib/opensourceshakespeare-org/utils.ts:39: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
-
-- src/lib/opensourceshakespeare-org/compiler.ts:119: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
-- src/lib/opensourceshakespeare-org/utils.ts:41: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
+### ToDo Comments
 
 - src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
 - src/lib/opensourceshakespeare-org/utils.ts:41: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?

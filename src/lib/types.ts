@@ -31,6 +31,7 @@ export type SceneDescriptionItemToken = {
 
 export type UnknownToken = {
 	type: 'unknown';
+	raw?: string;
 	match?: ReturnType<typeof String.prototype.match>;
 };
 
