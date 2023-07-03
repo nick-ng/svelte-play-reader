@@ -17,7 +17,9 @@ if (browser) {
 		if (storedActorsString) {
 			storedActors = JSON.parse(storedActorsString);
 		}
-	} catch (_e) {}
+	} catch (_e) {
+		// noop
+	}
 }
 
 export const actorsStore = writable<{

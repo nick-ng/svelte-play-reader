@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 
 const WRITER_EDITOR_LOCAL_STORAGE_KEY = 'NICK-WRITER-EDITOR';
 
-let currentWriterEditor: string = '';
+let currentWriterEditor = '';
 
 let isNewStore = true;
 
@@ -15,7 +15,9 @@ if (browser) {
 			isNewStore = false;
 			currentWriterEditor = temp;
 		}
-	} catch (_e) {}
+	} catch (_e) {
+		// noop
+	}
 }
 
 export const writerEditorStore = writable<string>(currentWriterEditor);

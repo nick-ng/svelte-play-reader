@@ -33,7 +33,9 @@ if (browser) {
 				...JSON.parse(storedOptionsString),
 			};
 		}
-	} catch (_e) {}
+	} catch (_e) {
+		// noop
+	}
 }
 
 export const optionsStore = writable<Options>(storedOptions);

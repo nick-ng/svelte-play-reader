@@ -98,7 +98,7 @@ export default class Compiler {
 				if (!isDescribingScene && characterLineMatches) {
 					const character = characterLineMatches.groups?.characterName;
 
-					let stageDirections: Required<CharacterLinesToken>['stageDirections'] = [];
+					const stageDirections: Required<CharacterLinesToken>['stageDirections'] = [];
 
 					const feets = trimmedRawValue
 						.replace(`${character}.`, '')

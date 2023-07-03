@@ -3,7 +3,7 @@
 	import { actorsStore } from '$lib/actors-store';
 	import { optionsStore } from '$lib/options-store';
 
-	let voices: SpeechSynthesisVoice[] = [];
+	let voices: ReturnType<typeof speechSynthesis.getVoices> = [];
 
 	let genders: { [voiceURI: string]: string } = {};
 	let ages: { [voiceURI: string]: string } = {};

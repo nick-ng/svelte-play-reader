@@ -1,4 +1,4 @@
-import type { Character, Scene, StageDirection, Workspace } from '$lib/types';
+import type { Character, Scene, Workspace } from '$lib/types';
 
 export const lexStageDirection = (
 	rawStageDirection: string
@@ -20,7 +20,6 @@ export const parseStageDirection = (
 	dramatisPersonae: Character[],
 	workspace: Workspace
 ): void => {
-	const charactersOnStage0 = [...workspace.charactersOnStage];
 	// check if it's a movement stage direction and which direction.
 	const movmentMatch = stageDirectionValue.match(/(Enter)|(Exit)|(Exeunt)/);
 
@@ -113,8 +112,6 @@ export const parseStageDirection = (
 			direction,
 			characterNames,
 			timing,
-			// charactersOnStage0,
-			// charactersOnStage1: [...workspace.charactersOnStage],
 		});
 	}
 };
