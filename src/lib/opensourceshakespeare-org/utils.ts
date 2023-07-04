@@ -98,10 +98,12 @@ export const parseStageDirection = (
 					(onStage) => !characterNames.includes(onStage)
 				);
 			} else if (direction === 'exit') {
+				characterNames.push(workspace.lastSpeaker);
 				workspace.charactersOnStage = workspace.charactersOnStage.filter(
 					(onStage) => onStage !== workspace.lastSpeaker
 				);
 			} else {
+				characterNames = [...workspace.charactersOnStage];
 				workspace.charactersOnStage = [];
 			}
 		}
