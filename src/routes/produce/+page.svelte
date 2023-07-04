@@ -37,6 +37,9 @@
 					const s = scene.steps[j];
 
 					if (s.type === 'stage-direction') {
+						const el = document.getElementById(stepId);
+
+						el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 						await new Promise((resolve) => {
 							setTimeout(resolve, 500);
 						});
@@ -52,8 +55,9 @@
 							speakingCharacter = s.character;
 							feetNumber = k;
 
-							const el = document.getElementById(stepId);
 							feetId = `${stepId}_${k}`;
+
+							const el = document.getElementById(feetId);
 
 							el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
