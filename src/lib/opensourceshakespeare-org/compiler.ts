@@ -107,7 +107,6 @@ export default class Compiler {
 						.map((a, i) => {
 							const temp = a.trim().replace(/\d+$/, '').trim().replaceAll(/ +/g, ' ');
 
-							// @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
 							if (temp.match(/\[.*\]/)) {
 								const temp2 = lexStageDirection(temp);
 

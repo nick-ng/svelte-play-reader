@@ -46,5 +46,4 @@ Version=1|
 
 ### ToDo Comments
 
-- src/lib/opensourceshakespeare-org/compiler.ts:110: @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
 - src/lib/opensourceshakespeare-org/utils.ts:40: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
