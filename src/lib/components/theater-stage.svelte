@@ -11,16 +11,16 @@
 	$: currentScene = scenes[currentSceneIndex];
 </script>
 
-<div class="my-2 max-h-96 overflow-y-scroll">
-	<h2>Stage</h2>
+<div class="my-2 max-h-96 overflow-y-scroll rounded-sm border border-gray-500">
+	<h2 class="mx-1">Stage</h2>
 
 	<div>
 		{#each scenes as scene}
-			<h3>Act: {scene.act}, Scene: {scene.scene}</h3>
+			<h3 class="mx-1">Act: {scene.act}, Scene: {scene.scene}</h3>
 			{#each scene.settings as setting}
-				<p>{setting}</p>
+				<p class="mx-1">{setting}</p>
 			{/each}
-			<table>
+			<table class="max-w-prose">
 				<tbody>
 					{#each scene.steps as s, i}
 						<tr
@@ -30,7 +30,9 @@
 								: 'odd:bg-gray-200 odd:dark:bg-gray-700'}
 						>
 							{#if s.type === 'character-lines'}
-								<td class="px-2 py-1 align-top font-bold">{s.character}. </td>
+								<td class="relative bg-inherit px-2 py-1 align-top font-bold"
+									><div class="sticky top-0 bg-inherit">{s.character}.</div></td
+								>
 								<td class="px-2 py-1 align-top">
 									{#each s.feets as feet, j}
 										<div

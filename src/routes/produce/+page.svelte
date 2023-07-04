@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { writerEditorStore } from '$lib/writer-store';
 	import { playLine } from '$lib/speech-utils';
 	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
 	import Stage from '$lib/components/theater-stage.svelte';
 
-	let fullText = '';
+	let fullText = $writerEditorStore;
 	let speakingCharacter = '';
 	let feetNumber = 0;
 	let stop = true;
@@ -12,16 +12,13 @@
 	let feetId = '';
 
 	$: compiler = new OSSCompiler(fullText);
-
-	onMount(async () => {
-		const res = await fetch('/oss-hamlet-a1-s1.txt');
-
-		fullText = await res.text();
-	});
 </script>
 
 <div>
 	<h1>Produce</h1>
+
+	<div>Speaking Character: {speakingCharacter}</div>
+	<div>Step ID: {stepId}:{feetNumber}</div>
 
 	<Stage scenes={compiler.scenes} currentStep={stepId} currentFeet={feetId} />
 
@@ -74,8 +71,9 @@
 			stop = true;
 			stepId = '';
 			feetId = '';
-		}}>Test</button
+		}}>Play</button
 	>
+
 	<button
 		class="button-default"
 		on:click={() => {
@@ -86,9 +84,38 @@
 		}}>Stop</button
 	>
 
-	<p>Speaking Character: {speakingCharacter}</p>
-	<p>{feetNumber}</p>
-	<p>Step ID: {stepId}</p>
+	<div>
+		<div>
+			<button
+				class="button-default"
+				on:click={() => {
+					fullText = $writerEditorStore;
+				}}
+			>
+				Your play from the "Write" page
+			</button>
+		</div>
+		<div>
+			<button
+				class="button-default"
+				on:click={async () => {
+					const res = await fetch('/oss-hamlet-a1-s1.txt');
+
+					fullText = await res.text();
+				}}>Hamlet, Act I, Scene 1</button
+			>
+		</div>
+		<div>
+			<button
+				class="button-default"
+				on:click={async () => {
+					const res = await fetch('/mongodb-is-web-scale.txt');
+
+					fullText = await res.text();
+				}}>MongoDB is Web Scale</button
+			>
+		</div>
+	</div>
 
 	<details>
 		<summary>Debug</summary>
