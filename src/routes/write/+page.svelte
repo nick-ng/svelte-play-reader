@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { writerEditorStore } from '$lib/writer-store';
+	import { writerEditorStore } from '$lib/stores/writer-store';
 
-	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
+	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 
 	$: compiler = new OSSCompiler($writerEditorStore);
 	$: unknownTokens = compiler.tokens.filter((t) => t.type === 'unknown');

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { writerEditorStore } from '$lib/writer-store';
+	import { writerEditorStore } from '$lib/stores/writer-store';
 	import { playLine } from '$lib/speech-utils';
-	import OSSCompiler from '$lib/opensourceshakespeare-org/compiler';
+	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 	import Stage from '$lib/components/theater-stage.svelte';
 
 	let fullText = $writerEditorStore;

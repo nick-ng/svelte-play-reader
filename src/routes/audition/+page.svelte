@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { actorsStore } from '$lib/actors-store';
-	import { optionsStore } from '$lib/options-store';
+	import { actorsStore } from '$lib/stores/actors-store';
+	import { optionsStore } from '$lib/stores/options-store';
 
 	let voices: ReturnType<typeof speechSynthesis.getVoices> = [];
 
