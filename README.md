@@ -46,3 +46,5 @@ Version=1|
 
 ### ToDo Comments
 
+- src/lib/compilers/opensourceshakespeare-org/utils.ts:40: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
+- src/lib/stores/index-db.ts:29: @todo(nick-ng): make play store https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB

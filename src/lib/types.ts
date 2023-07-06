@@ -3,7 +3,10 @@ export type CharacterLinesToken = {
 	raw?: string;
 	character: string;
 	feets: string[];
-	stageDirections?: { afterFeet: number; value: string }[];
+	stageDirections?: {
+		afterFeet: number;
+		value: string;
+	}[];
 };
 
 export type StageDirectionToken = {
@@ -15,7 +18,10 @@ export type StageDirectionToken = {
 export type ActSceneToken = {
 	type: 'act-scene';
 	raw?: string;
-	actScene?: { act: string; scene: number };
+	actScene?: {
+		act: string;
+		scene: number;
+	};
 };
 
 export type SceneDescriptionCompleteToken = {
@@ -43,7 +49,11 @@ export type Token =
 	| SceneDescriptionCompleteToken
 	| UnknownToken;
 
-export type Workspace = { charactersOnStage: string[]; lastSpeaker: string; currentScene: Scene };
+export type Workspace = {
+	charactersOnStage: string[];
+	lastSpeaker: string;
+	currentScene: Scene;
+};
 
 export type Character = {
 	name: string;
@@ -81,9 +91,34 @@ export type Step =
 			charactersOnStage1?: string[];
 	  };
 
-export type Scene = { act: string; scene: number; settings: string[]; steps: Step[] };
+export type Scene = {
+	act: string;
+	scene: number;
+	settings: string[];
+	steps: Step[];
+};
 
 export type Play = {
 	dramatisPersonae: Character[];
 	scenes: Scene[];
+};
+
+export type Production = {
+	name: string;
+	sourceText: string;
+	cast: {
+		character: string;
+		voiceURI: string;
+		rate?: number;
+		pitch?: number;
+	}[];
+	direction: {
+		act: string;
+		scene: number;
+		step: number;
+		stageSide?: 'left' | 'right' | 'up' | 'down';
+		volumeMultiplier?: number;
+		rateMultiplier?: number;
+		pitchMultiplier?: number;
+	}[];
 };
