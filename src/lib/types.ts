@@ -121,4 +121,5 @@ export type Production = {
 		rateMultiplier?: number;
 		pitchMultiplier?: number;
 	}[];
+	updatedTimestamp: number;
 };
