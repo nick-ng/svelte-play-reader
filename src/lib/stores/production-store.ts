@@ -77,3 +77,31 @@ export const setCurrentProduction = async (id: string) => {
 		// noop
 	}
 };
+
+export const updateCurrentProduction = async (
+	callback: (previousProduction: Production) => Production
+) => {
+	productionStore.update((prev) => {
+		const { current, currentId } = prev;
+
+		if (!current || !currentId) {
+			throw new Error(
+				`Something went wrong when updating production: prev.currentId: ${currentId}, prev.current: ${JSON.stringify(
+					current
+				)}`
+			);
+		}
+
+		const newProduction = callback(current);
+
+		store.setItem(currentId, {
+			...newProduction,
+			updatedTimestamp: Date.now(),
+		});
+
+		return {
+			...prev,
+			current: newProduction,
+		};
+	});
+};
