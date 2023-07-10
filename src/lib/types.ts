@@ -104,6 +104,7 @@ export type Play = {
 };
 
 export type Production = {
+	id: string;
 	name: string;
 	sourceText: string;
 	cast: {
