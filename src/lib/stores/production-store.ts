@@ -12,6 +12,28 @@ const store = localforage.createInstance({
 	name: PRODUCTIONS_STORE,
 });
 
+let currentProduction: Production | null = null;
+
+if (browser) {
+	try {
+		const currentProductionString = localStorage.getItem(PRODUCTIONS_STORE);
+
+		if (typeof currentProductionString === 'string') {
+			currentProduction = JSON.parse(currentProductionString);
+		}
+	} catch (_e) {
+		// noop
+	}
+}
+
+export const currentProductionStore = writable(currentProduction);
+
+if (browser) {
+	currentProductionStore.subscribe((newCurrentProduction) => {
+		localStorage.setItem(PRODUCTIONS_STORE, JSON.stringify(newCurrentProduction));
+	});
+}
+
 export const productionStore = writable<{
 	list: {
 		id: string;
