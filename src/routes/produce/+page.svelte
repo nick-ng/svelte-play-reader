@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { writerEditorStore } from '$lib/stores/writer-store';
+	import { currentProductionStore } from '$lib/stores/production-store';
 	import { playLine } from '$lib/speech-utils';
 	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 	import Stage from '$lib/components/theater-stage.svelte';
@@ -11,10 +12,13 @@
 	let stepId = '';
 	let feetId = '';
 
-	$: compiler = new OSSCompiler(fullText);
+	$: compiler = new OSSCompiler($currentProductionStore?.sourceText || '');
 </script>
 
-<div>
+<div class="basis-prose">
+	<h1>Cast</h1>
+</div>
+<div class="basis-prose">
 	<h1>Produce</h1>
 
 	<div>Speaking Character: {speakingCharacter}</div>

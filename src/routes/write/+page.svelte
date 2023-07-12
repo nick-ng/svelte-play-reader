@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { writerEditorStore } from '$lib/stores/writer-store';
+	import { currentProductionStore } from '$lib/stores/production-store';
 
 	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 
@@ -9,6 +10,31 @@
 
 <div>
 	<h1>Write</h1>
+	<button
+		class="button-default"
+		on:click={() => {
+			currentProductionStore.update((prevProduction) => {
+				if (prevProduction) {
+					return {
+						...prevProduction,
+						sourceText: $writerEditorStore,
+					};
+				}
+
+				const temp = $writerEditorStore.split('\n')[0];
+
+				const name = temp.startsWith('//') ? temp.replace(/^\/\//, '').trim() : '';
+
+				return {
+					name,
+					sourceText: $writerEditorStore,
+					cast: [],
+					direction: [],
+					updatedTimestamp: Date.now(),
+				};
+			});
+		}}>Save as Current Production</button
+	>
 	<div>
 		<form class="sticky top-1 inline-block w-[65ch] max-w-[48vw]">
 			<textarea
