@@ -4,6 +4,7 @@
 	import { playLine } from '$lib/speech-utils';
 	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 	import Stage from '$lib/components/theater-stage.svelte';
+	import Cast from './cast.svelte';
 
 	let fullText = $writerEditorStore;
 	let speakingCharacter = '';
@@ -15,9 +16,8 @@
 	$: compiler = new OSSCompiler($currentProductionStore?.sourceText || '');
 </script>
 
-<div class="basis-prose">
-	<h1>Cast</h1>
-</div>
+<Cast {compiler} />
+
 <div class="basis-prose">
 	<h1>Produce</h1>
 
@@ -54,6 +54,7 @@
 							const u = playLine(f, null, 0.5, 1);
 
 							speakingCharacter = s.character;
+							console.log('speakingCharacter', speakingCharacter);
 							feetNumber = k;
 
 							feetId = `${stepId}_${k}`;

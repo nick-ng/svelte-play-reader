@@ -109,6 +109,7 @@ export type Production = {
 	cast: {
 		character: string;
 		voiceURI: string;
+		gender?: 'male' | 'female';
 		rate?: number;
 		pitch?: number;
 	}[];
