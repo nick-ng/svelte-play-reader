@@ -11,7 +11,6 @@
 <div>
 	<h1>Write</h1>
 	<button
-		class="button-default"
 		on:click={() => {
 			currentProductionStore.update((prevProduction) => {
 				if (prevProduction) {

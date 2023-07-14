@@ -59,11 +59,10 @@
 			</div>
 			<div class="ml-2">
 				<button
-					class="button-default"
 					on:click={() => {
 						actorsJsonString = JSON.stringify($actorsStore);
 					}}>Export</button
-				> <button class="button-default">Import</button>
+				> <button>Import</button>
 				<textarea class="mt-2 block h-40 w-56 resize-none" bind:value={actorsJsonString} />
 			</div>
 		</div>
@@ -101,14 +100,19 @@
 			>
 				<h2>{voice.name}</h2>
 				<button
-					class="button-default"
 					on:click={() => {
+						speechSynthesis.cancel();
 						const utterance = new SpeechSynthesisUtterance($optionsStore.auditionPhrase);
 
 						utterance.voice = voice;
 						utterance.rate = $optionsStore.auditionRate;
 						utterance.volume = $optionsStore.auditionVolume;
 						speechSynthesis.speak(utterance);
+					}}>Test ({voice.lang})</button
+				>
+				<button
+					on:click={() => {
+						speechSynthesis.cancel();
 					}}>Test ({voice.lang})</button
 				>
 

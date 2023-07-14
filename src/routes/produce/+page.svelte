@@ -27,7 +27,6 @@
 	<Stage scenes={compiler.scenes} currentStep={stepId} currentFeet={feetId} />
 
 	<button
-		class="button-default"
 		on:click={async () => {
 			stop = false;
 
@@ -80,7 +79,6 @@
 	>
 
 	<button
-		class="button-default"
 		on:click={() => {
 			speechSynthesis.cancel();
 			stop = true;
@@ -92,7 +90,6 @@
 	<div>
 		<div>
 			<button
-				class="button-default"
 				on:click={() => {
 					fullText = $writerEditorStore;
 				}}
@@ -102,7 +99,6 @@
 		</div>
 		<div>
 			<button
-				class="button-default"
 				on:click={async () => {
 					const res = await fetch('/oss-hamlet-a1-s1.txt');
 
@@ -112,7 +108,6 @@
 		</div>
 		<div>
 			<button
-				class="button-default"
 				on:click={async () => {
 					const res = await fetch('/mongodb-is-web-scale.txt');
 

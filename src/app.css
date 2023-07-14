@@ -13,7 +13,8 @@
 		@apply bg-white text-black dark:bg-gray-800 dark:text-white;
 	}
 
-	input[type='text'],
+	input,
+	select,
 	textarea {
 		@apply rounded border border-gray-200 bg-white px-0.5 text-black dark:border-gray-600 dark:bg-gray-800 dark:text-white;
 	}
@@ -50,7 +51,7 @@
 		@apply cursor-not-allowed opacity-70;
 	}
 
-	.button-default {
+	button {
 		@apply rounded border border-gray-600 px-2 py-0 dark:border-gray-300 cannot-hover:py-2;
 	}
 
