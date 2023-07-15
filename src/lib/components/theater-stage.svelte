@@ -48,7 +48,7 @@
 								<td class="px-2 py-1 text-xs">
 									{`a${scene.act}_s${scene.scene}_${i}`}
 								</td>
-							{:else if s.type === 'stage-direction'}
+							{:else if s.type === 'stage-direction' && s.subType === 'movement'}
 								<td colspan="2" class="px-2 py-1 align-top text-lg italic">
 									<span class="capitalize">{s.direction}</span>
 									{s.characterNames.join(s.timing === 'sequential' ? ' then ' : ', ')}
