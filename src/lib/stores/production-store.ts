@@ -12,7 +12,13 @@ const store = localforage.createInstance({
 	name: PRODUCTIONS_STORE,
 });
 
-let currentProduction: Production | null = null;
+let currentProduction: Production = {
+	cast: [],
+	direction: [],
+	name: '',
+	sourceText: '',
+	updatedTimestamp: Date.now(),
+};
 
 if (browser) {
 	try {

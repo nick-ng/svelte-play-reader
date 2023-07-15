@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { writerEditorStore } from '$lib/stores/writer-store';
 	import { currentProductionStore } from '$lib/stores/production-store';
 	import { playLine } from '$lib/speech-utils';
@@ -8,21 +9,50 @@
 
 	let fullText = $writerEditorStore;
 	let speakingCharacter = '';
+	let actor = '';
 	let feetNumber = 0;
 	let stop = true;
 	let stepId = '';
 	let feetId = '';
 
+	let volume = 0.3;
+
+	let voices: ReturnType<typeof speechSynthesis.getVoices> = [];
+
 	$: compiler = new OSSCompiler($currentProductionStore?.sourceText || '');
+
+	onMount(() => {
+		voices = speechSynthesis.getVoices();
+
+		speechSynthesis.addEventListener('voiceschanged', () => {
+			voices = speechSynthesis.getVoices();
+		});
+	});
 </script>
 
-<Cast {compiler} />
+<Cast {compiler} {volume} />
 
 <div class="basis-prose">
 	<h1>Produce</h1>
 
-	<div>Speaking Character: {speakingCharacter}</div>
-	<div>Step ID: {stepId}:{feetNumber}</div>
+	<table class="border-separate border-spacing-1">
+		<tbody>
+			<tr>
+				<td> Speaking Character </td>
+				<td>
+					{speakingCharacter}
+				</td>
+			</tr>
+			<tr>
+				<td>Actor</td>
+				<td>{actor}</td>
+			</tr>
+			<tr>
+				<td>Step ID</td>
+				<td>{stepId ? `${stepId}: ${feetNumber}` : ''}</td>
+			</tr>
+		</tbody>
+	</table>
 
 	<Stage scenes={compiler.scenes} currentStep={stepId} currentFeet={feetId} />
 
@@ -49,11 +79,26 @@
 								return;
 							}
 
+							const castMember = $currentProductionStore.cast.find(
+								(c) => c.character === s.character
+							);
+
+							const voice = castMember
+								? voices.find((v) => v.voiceURI === castMember.voiceURI) || null
+								: null;
+
 							const f = s.feets[k];
-							const u = playLine(f, null, 0.5, 1);
+							const u = playLine({
+								phrase: f,
+								voice,
+								volume,
+								rate: 1,
+								pitch: 1,
+							});
 
 							speakingCharacter = s.character;
-							console.log('speakingCharacter', speakingCharacter);
+							actor = voice?.name || '';
+
 							feetNumber = k;
 
 							feetId = `${stepId}_${k}`;
@@ -121,4 +166,18 @@
 		<summary>Debug</summary>
 		<pre>{JSON.stringify(compiler.scenes, null, '  ')}</pre>
 	</details>
+</div>
+
+<div class="basis-prose">
+	<h1>Controls</h1>
+	<label
+		>Volume: <input
+			class="align-text-bottom"
+			type="range"
+			min={0}
+			max={1}
+			step={0.01}
+			bind:value={volume}
+		/></label
+	>
 </div>

@@ -8,6 +8,7 @@
 	export let character: Character;
 	export let castMember: Production['cast'][number] | undefined;
 	export let volume: number;
+	export let totalWords: number;
 	export let handleSave: (newCastMember: Production['cast'][number]) => void | Promise<void>;
 
 	const DEFAULT_CAST_SETTINGS = {
@@ -50,6 +51,7 @@
 
 		return `${a.lang}${a.name}`.localeCompare(`${b.lang}${b.name}`);
 	});
+	$: castVoice = voices.find((v) => v.voiceURI === castMember?.voiceURI);
 
 	onMount(() => {
 		voices = speechSynthesis.getVoices();
@@ -61,7 +63,11 @@
 </script>
 
 <details open={!castMember?.voiceURI}>
-	<summary>{character.name}</summary>
+	<summary
+		>{character.name} - {((character.words / totalWords) * 100).toFixed(1)}% {castVoice?.name
+			? `- ${castVoice.name}`
+			: ''}</summary
+	>
 	<table>
 		<tbody>
 			<tr>
@@ -88,11 +94,28 @@
 		<button>Stop Talking</button>
 		<div class="max-h-48 overflow-y-scroll">
 			{#each voices as voice}
-				<div class="odd-rows p-1">
-					<span>({voice.lang}) {voice.name}</span><span>
-						- {$actorsStore[voice.voiceURI]?.fluency}</span
+				<div
+					class={`${
+						castMember?.voiceURI === voice.voiceURI ? 'bg-green-200 dark:bg-green-800' : 'odd-rows'
+					} p-1`}
+				>
+					<label
+						class="inline-block w-2/3 overflow-x-hidden text-ellipsis whitespace-nowrap align-text-bottom"
 					>
+						<input
+							class="align-middle"
+							type="radio"
+							name={`voice-${character.name}`}
+							value={voice.voiceURI}
+							bind:group={currentVoiceURI}
+						/>
+						({voice.lang}) {voice.name}
+					</label>
+					<div class="inline-block align-text-bottom">
+						- {$actorsStore[voice.voiceURI]?.fluency}
+					</div>
 					<button
+						class="inline-block align-text-bottom"
 						on:click={() => {
 							speechSynthesis.cancel();
 							const utterance = new SpeechSynthesisUtterance(voice.name);
@@ -109,15 +132,15 @@
 		</div>
 		<button
 			on:click={() => {
-				console.log('currentRate', currentRate);
-				console.log('currentPitch', currentPitch);
-				console.log('currentGender', currentGender);
-				handleSave({
+				const newCasting = {
 					character: character.name,
 					gender: currentGender,
 					pitch: currentPitch,
 					rate: currentRate,
-				});
+					voiceURI: currentVoiceURI,
+				};
+
+				handleSave(newCasting);
 			}}
 		>
 			Save

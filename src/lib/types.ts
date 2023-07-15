@@ -57,6 +57,7 @@ export type Workspace = {
 
 export type Character = {
 	name: string;
+	words: number;
 };
 
 export type MovementStageDirection = {
