@@ -107,7 +107,6 @@ export default class Compiler {
 						.map((a, i) => {
 							const temp = a.trim().replace(/\d+$/, '').trim().replaceAll(/ +/g, ' ');
 
-							// @todo(nick-ng): sometimes there is an "Exit." stage direction at the end of a feet
 							if (temp.match(/\[.*\]/)) {
 								const temp2 = lexStageDirection(temp);
 
@@ -182,7 +181,7 @@ export default class Compiler {
 			}
 		});
 
-		this.dramatisPersonae = [...temp].map((c) => ({ name: c }));
+		this.dramatisPersonae = [...temp].map((c) => ({ name: c, words: 0 }));
 
 		const workspace: Workspace = {
 			charactersOnStage: [],
@@ -216,12 +215,15 @@ export default class Compiler {
 				}
 				case 'character-lines': {
 					let tempStart = 0;
+					let words = 0;
 
 					if (token.stageDirections) {
 						for (const stageDirection of token.stageDirections) {
 							const temp = token.feets.slice(tempStart, stageDirection.afterFeet);
 
 							tempStart = stageDirection.afterFeet;
+
+							words += temp.join(' ').split(/\s+/).length;
 
 							workspace.currentScene.steps.push({
 								type: 'character-lines',
@@ -235,13 +237,22 @@ export default class Compiler {
 					}
 
 					if (tempStart < token.feets.length) {
+						const temp = token.feets.slice(tempStart, token.feets.length);
+						words += temp.join(' ').split(/\s+/).length;
+
 						workspace.currentScene.steps.push({
 							type: 'character-lines',
 							character: token.character,
-							feets: token.feets.slice(tempStart, token.feets.length),
+							feets: temp,
 						});
 
 						workspace.lastSpeaker = token.character;
+					}
+
+					const thisCharacter = this.dramatisPersonae.find((d) => d.name === token.character);
+
+					if (thisCharacter) {
+						thisCharacter.words += words;
 					}
 
 					break;

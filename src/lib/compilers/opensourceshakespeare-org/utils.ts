@@ -82,6 +82,7 @@ export const parseStageDirection = (
 				if (!dramatisPersonae.map((c) => c.name).includes(characterName)) {
 					dramatisPersonae.push({
 						name: characterName,
+						words: 0,
 					});
 				}
 			});
