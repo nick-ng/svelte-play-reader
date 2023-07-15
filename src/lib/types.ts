@@ -1,4 +1,5 @@
 export type CharacterLinesToken = {
+	tokenNumber?: number;
 	type: 'character-lines';
 	raw?: string;
 	character: string;
@@ -6,16 +7,22 @@ export type CharacterLinesToken = {
 	stageDirections?: {
 		afterFeet: number;
 		value: string;
+		stageBefore?: string[];
+		stageAfter?: string[];
 	}[];
 };
 
 export type StageDirectionToken = {
+	tokenNumber?: number;
 	type: 'stage-direction';
 	raw?: string;
 	value: string;
+	stageBefore?: string[];
+	stageAfter?: string[];
 };
 
 export type ActSceneToken = {
+	tokenNumber?: number;
 	type: 'act-scene';
 	raw?: string;
 	actScene?: {
@@ -25,17 +32,20 @@ export type ActSceneToken = {
 };
 
 export type SceneDescriptionCompleteToken = {
+	tokenNumber?: number;
 	type: 'scene-description-complete';
 	raw?: string;
 };
 
 export type SceneDescriptionItemToken = {
+	tokenNumber?: number;
 	type: 'scene-description-item';
 	raw?: string;
 	value: string;
 };
 
 export type UnknownToken = {
+	tokenNumber?: number;
 	type: 'unknown';
 	raw?: string;
 	match?: ReturnType<typeof String.prototype.match>;
@@ -66,6 +76,7 @@ export type MovementStageDirection = {
 	direction: 'enter' | 'exit' | 'exeunt';
 	timing: 'simultaneous' | 'sequential';
 	characterNames: string[];
+	stageBefore: string[];
 };
 
 export type ActionStageDirection = {
@@ -82,15 +93,7 @@ export type Step =
 			character: string;
 			feets: string[];
 	  }
-	| {
-			type: 'stage-direction';
-			subType: 'movement';
-			direction: 'enter' | 'exit' | 'exeunt';
-			characterNames: string[];
-			timing: 'sequential' | 'simultaneous';
-			charactersOnStage0?: string[];
-			charactersOnStage1?: string[];
-	  };
+	| StageDirection;
 
 export type Scene = {
 	act: string;

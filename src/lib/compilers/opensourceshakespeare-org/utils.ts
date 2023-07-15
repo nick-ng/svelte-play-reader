@@ -18,7 +18,8 @@ export const lexStageDirection = (
 export const parseStageDirection = (
 	stageDirectionValue: string,
 	dramatisPersonae: Character[],
-	workspace: Workspace
+	workspace: Workspace,
+	tokenNumber: number
 ): void => {
 	// check if it's a movement stage direction and which direction.
 	const movmentMatch = stageDirectionValue.match(/(Enter)|(Exit)|(Exeunt)/);
@@ -26,14 +27,19 @@ export const parseStageDirection = (
 	const matchingCharacterNames: string[] = [];
 
 	// check if there are any named characters in the stage direction.
+	// @todo(nick-ng): handle all character
+	const [beforeButStageDirection] = stageDirectionValue.split('but');
+
 	dramatisPersonae.forEach((character) => {
-		if (stageDirectionValue.includes(character.name)) {
+		if (beforeButStageDirection.includes(character.name)) {
 			matchingCharacterNames.push(character.name);
 		}
 	});
 
 	if (movmentMatch) {
 		const direction = movmentMatch[0].toLowerCase() as 'enter' | 'exit' | 'exeunt';
+
+		const stageBefore = [...workspace.charactersOnStage];
 
 		let characterNames: string[] = [];
 
@@ -50,7 +56,7 @@ export const parseStageDirection = (
 					characterNames.push(characterMatch.groups.character);
 				} else {
 					throw new Error(
-						`Error when parsing stage direction. No characters entered. Stage direction: ${stageDirectionValue}`
+						`Error when parsing stage direction. No characters entered. Source stage direction: "${stageDirectionValue}". "tokenNumber": ${tokenNumber}`
 					);
 				}
 			} else {
@@ -58,7 +64,7 @@ export const parseStageDirection = (
 				// any character who entered the stage will already be in the dramatisPersonae or will be added as they are discovered. if we didn't match any characters and the stage direction is not exactly "Exit." or "Exeunt.", it means the script is asking for an unknown character to exit the stage.
 				if (!stageDirectionValue.match(/(Exit)|(Exeunt)\.?/)) {
 					throw new Error(
-						`Error when parsing stage direction. Unknown character to leave the stage. Stage direction: ${stageDirectionValue}`
+						`Error when parsing stage direction. Unknown character to leave the stage. Source stage direction: "${stageDirectionValue}". "tokenNumber": ${tokenNumber}`
 					);
 				}
 			}
@@ -92,7 +98,7 @@ export const parseStageDirection = (
 					throw new Error(
 						`Character not on stage. On stage: ${workspace.charactersOnStage.join(
 							', '
-						)}, Exiting stage: ${characterNames}`
+						)}, Exiting stage: ${characterNames}. Source stage direction: "${stageDirectionValue}" "tokenNumber": ${tokenNumber}`
 					);
 				}
 				workspace.charactersOnStage = workspace.charactersOnStage.filter(
@@ -115,6 +121,7 @@ export const parseStageDirection = (
 			direction,
 			characterNames,
 			timing,
+			stageBefore,
 		});
 	}
 };
