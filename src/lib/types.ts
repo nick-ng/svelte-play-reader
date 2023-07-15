@@ -108,8 +108,8 @@ export type Production = {
 	sourceText: string;
 	cast: {
 		character: string;
-		voiceURI: string;
-		gender?: 'male' | 'female';
+		voiceURI?: string;
+		gender?: string;
 		rate?: number;
 		pitch?: number;
 	}[];

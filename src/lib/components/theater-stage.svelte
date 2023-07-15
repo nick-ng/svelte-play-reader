@@ -27,7 +27,7 @@
 							id={`a${scene.act}_s${scene.scene}_${i}`}
 							class={`a${scene.act}_s${scene.scene}_${i}` === currentStep
 								? 'bg-green-200 dark:bg-green-800'
-								: 'odd:bg-gray-200 odd:dark:bg-gray-700'}
+								: 'odd-rows'}
 						>
 							{#if s.type === 'character-lines'}
 								<td class="relative bg-inherit px-2 py-1 align-top font-bold"
