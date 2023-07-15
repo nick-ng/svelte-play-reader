@@ -12,4 +12,18 @@
 		words are the lines they should say. There are also words that indicate when people enter and
 		leave the stage.
 	</p>
+	<h2>Instructions</h2>
+	<ol class="ml-5 list-decimal">
+		<li>
+			Write your play on the "Write" page. Any changes are saved automatically. Once you are happy
+			with your play, click "Save as Current Production" to save it as your current production. Note
+			that this will overwrite the play that's currently there.
+		</li>
+		<li>(Optional) Listen to the different voices in the "Audition" page.</li>
+		<li>
+			Assign voices to the different characters on the "Produce" page. If you've made notes on the
+			"Audition" page, voices will be sorted first by the gender that matches the character, then by
+			their fluency.
+		</li>
+	</ol>
 </div>

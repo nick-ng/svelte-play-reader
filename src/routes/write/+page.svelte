@@ -40,11 +40,47 @@
 				class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none"
 				bind:value={$writerEditorStore}
 			/>
+			<button
+				class="block"
+				type="button"
+				on:click={async () => {
+					const res = await fetch('/oss-hamlet-a1-s1.txt');
+
+					$writerEditorStore = await res.text();
+				}}>Hamlet Act I, Scene 1</button
+			>
+			<button
+				class="mt-1 block"
+				type="button"
+				on:click={async () => {
+					const res = await fetch('/oss-hamlet-a1-full.txt');
+
+					$writerEditorStore = await res.text();
+				}}>Hamlet Act I, Scene 1-5</button
+			>
+			<button
+				class="mt-1 block"
+				type="button"
+				on:click={async () => {
+					const res = await fetch('/oss-hamlet-full.txt');
+
+					$writerEditorStore = await res.text();
+				}}>Hamlet Act I - V</button
+			>
+			<button
+				class="mt-1 block"
+				type="button"
+				on:click={async () => {
+					const res = await fetch('/mongodb-is-web-scale.txt');
+
+					$writerEditorStore = await res.text();
+				}}>MongoDB is Web Scale</button
+			>
 		</form>
 		<div class="inline-block w-[65ch] max-w-[48vw] align-top">
 			{#if compiler.error}
 				<h3>Error</h3>
-				<p>compiler.error</p>
+				<p>{compiler.error}</p>
 			{/if}
 			<h3>Dramatis Personae (ordered by appearance)</h3>
 			<ul class="ml-8 list-decimal">
@@ -69,6 +105,10 @@
 						{/each}
 					</ul>
 					<pre>{JSON.stringify(compiler.tokens, null, '  ')}</pre>
+				</details>
+				<details>
+					<summary>Scenes</summary>
+					<pre>{JSON.stringify(compiler.scenes, null, '  ')}</pre>
 				</details>
 			</details>
 		</div>
