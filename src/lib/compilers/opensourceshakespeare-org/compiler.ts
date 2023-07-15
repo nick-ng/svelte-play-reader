@@ -30,6 +30,8 @@ export default class Compiler {
 	stage1 = (): this => {
 		let isDescribingScene = false;
 
+		let tokenNumber = 0;
+
 		this.rawScript
 			.replaceAll(/next scene ./g, '')
 			.split(/\/\*.*\*\//) // handle comments
@@ -57,6 +59,7 @@ export default class Compiler {
 				);
 				if (actSceneMatch) {
 					this.tokens.push({
+						tokenNumber: tokenNumber++,
 						type: 'act-scene',
 						raw: rawValue,
 						actScene: {
@@ -74,6 +77,7 @@ export default class Compiler {
 				if (rawValue === '---') {
 					isDescribingScene = false;
 					this.tokens.push({
+						tokenNumber: tokenNumber++,
 						type: 'scene-description-complete',
 						raw: rawValue,
 					});
@@ -84,6 +88,7 @@ export default class Compiler {
 				// scene description
 				if (isDescribingScene) {
 					this.tokens.push({
+						tokenNumber: tokenNumber++,
 						type: 'scene-description-item',
 						value: rawValue.trim(),
 						raw: rawValue,
@@ -126,6 +131,7 @@ export default class Compiler {
 
 					if (character && feets.length > 0) {
 						const token: CharacterLinesToken = {
+							tokenNumber: tokenNumber++,
 							type: 'character-lines',
 							raw: rawValue,
 							character,
@@ -140,6 +146,7 @@ export default class Compiler {
 
 						if (trimmedRawValue.match(/\s?Exit\.$/)) {
 							this.tokens.push({
+								tokenNumber: tokenNumber++,
 								type: 'stage-direction',
 								value: 'Exit.',
 							});
@@ -154,6 +161,7 @@ export default class Compiler {
 
 				if (tempStageDirection) {
 					this.tokens.push({
+						tokenNumber: tokenNumber++,
 						type: 'stage-direction',
 						raw: rawValue,
 						value: trimmedRawValue,
@@ -163,7 +171,7 @@ export default class Compiler {
 				}
 
 				if (rawValue) {
-					this.tokens.push({ type: 'unknown', raw: rawValue });
+					this.tokens.push({ tokenNumber: tokenNumber++, type: 'unknown', raw: rawValue });
 				}
 			});
 
@@ -189,7 +197,7 @@ export default class Compiler {
 			currentScene: getNewScene(),
 		};
 
-		this.tokens.forEach((token) => {
+		this.tokens.forEach((token, i) => {
 			switch (token.type) {
 				case 'act-scene': {
 					const { actScene } = token;
@@ -207,9 +215,12 @@ export default class Compiler {
 				}
 				case 'stage-direction': {
 					const { value } = token;
+					token.stageBefore = [...workspace.charactersOnStage];
 					if (value) {
-						parseStageDirection(value, this.dramatisPersonae, workspace);
+						parseStageDirection(value, this.dramatisPersonae, workspace, i);
 					}
+
+					token.stageAfter = [...workspace.charactersOnStage];
 
 					break;
 				}
@@ -232,7 +243,9 @@ export default class Compiler {
 							});
 							workspace.lastSpeaker = token.character;
 
-							parseStageDirection(stageDirection.value, this.dramatisPersonae, workspace);
+							stageDirection.stageBefore = [...workspace.charactersOnStage];
+							parseStageDirection(stageDirection.value, this.dramatisPersonae, workspace, i);
+							stageDirection.stageAfter = [...workspace.charactersOnStage];
 						}
 					}
 

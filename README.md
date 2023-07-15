@@ -27,8 +27,51 @@ You can preview the production build with `npm run preview`.
 
 Powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte)
 
+## Issues
+
+Need to be able to specify arbitrary aliases?
+
+```JSON
+{
+    "tokenNumber": 379,
+    "type": "character-lines",
+    "raw": "    Polonius. Away, I do beseech you, both away\n    I'll board him presently. O, give me leave.\n    [Exeunt King and Queen, [with Attendants].] 1275\n    How does my good Lord Hamlet? ",
+    "character": "Polonius",
+    "feets": [
+      "Away, I do beseech you, both away",
+      "I'll board him presently. O, give me leave.",
+      "How does my good Lord Hamlet?"
+    ],
+    "stageDirections": [
+      {
+        "type": "stage-direction",
+        "value": "Exeunt King and Queen, [with Attendants].",
+        "afterFeet": 2,
+        "stageBefore": [
+          "Polonius",
+          "Voltemand",
+          "Hamlet"
+        ],
+        "stageAfter": []
+      }
+    ]
+  }
+```
+
+Some way to mark which characters are a member of "Gentelmen"?
+
+```JSON
+{
+    "tokenNumber": 730,
+    "type": "stage-direction",
+    "raw": "Exeunt Gentlemen.",
+    "value": "Exeunt Gentlemen."
+  }
+```
+
 ## ToDos
 
+- Alias for characters
 - Use SSML to handle iambic pentameter
 
 ```xml
@@ -46,5 +89,6 @@ Version=1|
 
 ### ToDo Comments
 
-- src/lib/compilers/opensourceshakespeare-org/utils.ts:40: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
+- src/lib/compilers/opensourceshakespeare-org/utils.ts:30: @todo(nick-ng): handle all character
+- src/lib/compilers/opensourceshakespeare-org/utils.ts:46: @todo(nick-ng): what if an unknown character enters with a known character in the same stage direction?
 - src/lib/stores/index-db.ts:29: @todo(nick-ng): make play store https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB

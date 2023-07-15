@@ -132,36 +132,6 @@
 		}}>Stop</button
 	>
 
-	<div>
-		<div>
-			<button
-				on:click={() => {
-					fullText = $writerEditorStore;
-				}}
-			>
-				Your play from the "Write" page
-			</button>
-		</div>
-		<div>
-			<button
-				on:click={async () => {
-					const res = await fetch('/oss-hamlet-a1-s1.txt');
-
-					fullText = await res.text();
-				}}>Hamlet, Act I, Scene 1</button
-			>
-		</div>
-		<div>
-			<button
-				on:click={async () => {
-					const res = await fetch('/mongodb-is-web-scale.txt');
-
-					fullText = await res.text();
-				}}>MongoDB is Web Scale</button
-			>
-		</div>
-	</div>
-
 	<details>
 		<summary>Debug</summary>
 		<pre>{JSON.stringify(compiler.scenes, null, '  ')}</pre>
