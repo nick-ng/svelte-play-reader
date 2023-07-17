@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { writerEditorStore } from '$lib/stores/writer-store';
 	import { currentProductionStore } from '$lib/stores/production-store';
 	import { playLine } from '$lib/speech-utils';
 	import OSSCompiler from '$lib/compilers/opensourceshakespeare-org/compiler';
 	import Stage from '$lib/components/theater-stage.svelte';
 	import Cast from './cast.svelte';
 
-	let fullText = $writerEditorStore;
 	let speakingCharacter = '';
 	let actor = '';
 	let feetNumber = 0;
