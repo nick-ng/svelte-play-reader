@@ -5,10 +5,10 @@
 	export let currentStep = '';
 	export let currentFeet = '';
 
-	let currentSceneIndex = 0;
-	let currentScene: Scene | undefined;
+	// let currentSceneIndex = 0;
+	// let currentScene: Scene | undefined;
 
-	$: currentScene = scenes[currentSceneIndex];
+	// $: currentScene = scenes[currentSceneIndex];
 </script>
 
 <div class="my-2 max-h-96 overflow-y-scroll rounded-sm border border-gray-500">
