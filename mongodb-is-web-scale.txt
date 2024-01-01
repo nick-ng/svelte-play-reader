@@ -1,0 +1,81 @@
+Act I, Scene 1
+
+---
+
+Enter Alfred and Bob
+
+ Alfred. And in conclusion, we have found MySQL to be an excellent database for our website. Any questions?
+
+ Bob. Yes.
+ [microphone feed-back]
+ I have a question. Why didn't you use MongoDB? MongoDB is a web scale database and doesn't use SQL or joins so it's high performance.
+
+ Alfred. That's an excellent question. We evaluated several No-SQL databases and conclude that the options are still too immature for our production needs. MySQL is a proven database that is used across the web and it has the features we need.
+
+ Bob. But it doesn't scale. Everybody knows that relational databases don't scale because they use joins and write to disk.
+
+ Alfred. Scalability is a complicated topic and it's hard to make a general statement like that.
+
+ Bob. Relational databases weren't built for web scale. MongoDB handles web scale. You turn it on and it scales right up.
+
+ Alfred. It may surprise you that there are a handful of high-profile websites still using relational databases and in particular MySQL.
+
+ Bob. Relational databases have impotence mismatch.
+
+ Alfred. I think you mean impedance.
+
+ Bob. MySQL is slow as a dog. MongoDB will run circles around MySQL because MongoDB is web scale.
+
+ Alfred. MongoDB does have some impressive benchmarks, but they do some interesting things to get those numbers. For example, when you write to MongoDB, you don't actually write anything. You stage your data to be written at a later time. If there's a problem writing your data, you're fucked. Does that sound like a good design to you?
+
+ Bob. If that's what they need to do to get those kick-ass benchmarks then it's a great design.
+
+[Beat. Alfred looks at camera]
+
+ Alfred. If you're stupid enough to totally ignore durability just to get benchmarks, I suggest you pipe your data to /dev/null. It will be very fast.
+
+ Bob. If /dev/null is fast in web scale I will use it. Is it web scale?
+
+ Alfred. You are kidding me right? I was making a joke. I mean if you're happy writing to a database  that doesn't give you any idea that your  data is actually written just because you want high performance numbers, why not write to /dev/null. It's fast as hell.
+
+ Bob. does /dev/null support sharding?
+
+ Alfred. Holy shit. For my own mental health I'm going to assume you're just messing with me and aren't actually retarded. Do you even know what a shard is?
+
+ Bob. Shards are the secret ingredient in the web scale sauce. They just work.
+
+ Alfred. Please tell me you don't actually make a living in a technology field.
+
+ Bob. I'm a web programmer
+
+[Beat.]
+
+ Alfred. As of this moment I officially resign from my job as software engineer and will take up work on the farm shovelling pig shit and administering anal suppositories to sick horses because it will be a thousand times more tolerable than being in the same industry as dip-shits like you.
+ You read the latest post on highscalability.com and think you're a fucking Google architect and pair slogans like web scale and sharding but you have no idea what the fuck you are talking about. You're going to blow some project to hell because you get  a woody playing with software like it's a sex doll.
+ Relational databases have been around since the fucking 70s and are some of the most mature technology you can find yet somehow everything needs to be reinvented Google and Amazon post some white papers.
+ If you need to build a globally distributed search engine that manages petabytes of data fine, build your own database. But if you're like 99.9% of companies you can probably get by very well with something like MySQL and maybe Memcached.
+
+ Bob. Redis will kick Memcached's ass. It's so fast and scalable.
+
+ Alfred. Right now I'm thinking of how much fun it  will be to castrate my first bull down on the farm. I cannot wait to cut off the testicles of a three thousand pound raging bull as it tries to kick my head in.
+
+ Bob. MongoDB is a document database that doesn't need joins. It uses map-reduce.
+
+ Alfred. Now I'm cleaning a cistern of chicken shit but I don't care because I don't have to listen to the No-SQL fanboys reciting the feature list of their favourite schema free database.
+
+ Bob. By writing to memory map files, MongoDB can improve its write throughput by a factor of 10.
+
+ Alfred. What the fuck. Let's abandon transactions, consistency, durability, and pin our mission critical data to a table and give it a night it will never forget. I mean who cares what we store as long as we do it quickly. Oh sorry, that's right, I'm on the farm now suffocating from the stench of a thousand cow farts but it smells like roses to me because I am nowhere near this moronic conversation.
+
+ Bob. MongoDB uses atomic modifiers for contention free performance.
+
+ Alfred. now I've contracted e-coli from cleaning cow stalls and am bleeding out my asshole. I'll be dead soon but that is a welcome relief. I will never have to witness the collapse of the world economy because No-SQL radicals talked  financial institutions into abandoning perfectly good data stores because they didn't support distributed fucking map-reduce.
+
+ Bob. Mongo db stores files of any size without complicating your stack.
+
+[Beat. Alfred looks at camera]
+
+ Alfred. Thank you for your questions.
+ this presentation is over and I'm fucking off to the farm to start my new career.
+
+[Birds cawing]
