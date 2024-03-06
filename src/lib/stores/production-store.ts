@@ -9,7 +9,7 @@ import { uuid } from '$lib/utils';
 const PRODUCTIONS_STORE = 'NICK_PRODUCTIONS';
 
 const store = localforage.createInstance({
-	name: PRODUCTIONS_STORE,
+	name: PRODUCTIONS_STORE
 });
 
 let currentProduction: Production = {
@@ -17,7 +17,7 @@ let currentProduction: Production = {
 	direction: [],
 	name: '',
 	sourceText: '',
-	updatedTimestamp: Date.now(),
+	updatedTimestamp: Date.now()
 };
 
 if (browser) {
@@ -64,14 +64,14 @@ const updateProductionList = async () => {
 					productionList.push({
 						id: key,
 						name: production.name,
-						updatedTimestamp: production.updatedTimestamp,
+						updatedTimestamp: production.updatedTimestamp
 					});
 				}
 			});
 
 			productionStore.update((prev) => ({
 				...prev,
-				list: productionList,
+				list: productionList
 			}));
 		} catch (e) {
 			// noop
@@ -84,7 +84,7 @@ updateProductionList();
 export const createProduction = (newProduction: Production) => {
 	store.setItem(uuid(), {
 		...newProduction,
-		updatedTimestamp: Date.now(),
+		updatedTimestamp: Date.now()
 	});
 
 	return updateProductionList();
@@ -98,7 +98,7 @@ export const setCurrentProduction = async (id: string) => {
 			productionStore.update((prev) => ({
 				...prev,
 				current: currentProduction,
-				currentId: id,
+				currentId: id
 			}));
 		}
 	} catch (e) {
@@ -124,12 +124,12 @@ export const updateCurrentProduction = async (
 
 		store.setItem(currentId, {
 			...newProduction,
-			updatedTimestamp: Date.now(),
+			updatedTimestamp: Date.now()
 		});
 
 		return {
 			...prev,
-			current: newProduction,
+			current: newProduction
 		};
 	});
 };

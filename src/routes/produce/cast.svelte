@@ -35,7 +35,7 @@
 							...prevProduction,
 							cast: prevCast
 								.filter((c) => c.character !== newCasting.character)
-								.concat([newCasting]),
+								.concat([newCasting])
 						};
 					});
 				}}

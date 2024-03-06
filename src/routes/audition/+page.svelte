@@ -188,7 +188,7 @@
 								prevActors[voice.voiceURI] = {
 									age: ages[voice.voiceURI],
 									gender: genders[voice.voiceURI],
-									fluency: fluencies[voice.voiceURI],
+									fluency: fluencies[voice.voiceURI]
 								};
 
 								return prevActors;

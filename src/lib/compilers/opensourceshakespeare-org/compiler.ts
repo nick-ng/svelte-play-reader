@@ -64,8 +64,8 @@ export default class Compiler {
 						raw: rawValue,
 						actScene: {
 							act: actSceneMatch?.groups?.actRoman || '',
-							scene: parseInt(actSceneMatch?.groups?.sceneNumber || '', 10),
-						},
+							scene: parseInt(actSceneMatch?.groups?.sceneNumber || '', 10)
+						}
 					});
 
 					isDescribingScene = true;
@@ -79,7 +79,7 @@ export default class Compiler {
 					this.tokens.push({
 						tokenNumber: tokenNumber++,
 						type: 'scene-description-complete',
-						raw: rawValue,
+						raw: rawValue
 					});
 
 					return;
@@ -91,7 +91,7 @@ export default class Compiler {
 						tokenNumber: tokenNumber++,
 						type: 'scene-description-item',
 						value: rawValue.trim(),
-						raw: rawValue,
+						raw: rawValue
 					});
 
 					return;
@@ -118,7 +118,7 @@ export default class Compiler {
 								if (temp2) {
 									stageDirections.push({
 										...temp2,
-										afterFeet: i - stageDirections.length,
+										afterFeet: i - stageDirections.length
 									});
 								}
 
@@ -135,7 +135,7 @@ export default class Compiler {
 							type: 'character-lines',
 							raw: rawValue,
 							character,
-							feets,
+							feets
 						};
 
 						if (stageDirections.length > 0) {
@@ -148,7 +148,7 @@ export default class Compiler {
 							this.tokens.push({
 								tokenNumber: tokenNumber++,
 								type: 'stage-direction',
-								value: 'Exit.',
+								value: 'Exit.'
 							});
 						}
 
@@ -164,7 +164,7 @@ export default class Compiler {
 						tokenNumber: tokenNumber++,
 						type: 'stage-direction',
 						raw: rawValue,
-						value: trimmedRawValue,
+						value: trimmedRawValue
 					});
 
 					return;
@@ -194,7 +194,7 @@ export default class Compiler {
 		const workspace: Workspace = {
 			charactersOnStage: [],
 			lastSpeaker: '',
-			currentScene: getNewScene(),
+			currentScene: getNewScene()
 		};
 
 		this.tokens.forEach((token, i) => {
@@ -239,7 +239,7 @@ export default class Compiler {
 							workspace.currentScene.steps.push({
 								type: 'character-lines',
 								character: token.character,
-								feets: temp,
+								feets: temp
 							});
 							workspace.lastSpeaker = token.character;
 
@@ -256,7 +256,7 @@ export default class Compiler {
 						workspace.currentScene.steps.push({
 							type: 'character-lines',
 							character: token.character,
-							feets: temp,
+							feets: temp
 						});
 
 						workspace.lastSpeaker = token.character;

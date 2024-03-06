@@ -8,7 +8,7 @@ export const lexStageDirection = (
 	if (value) {
 		return {
 			type: 'stage-direction',
-			value,
+			value
 		};
 	}
 
@@ -88,7 +88,7 @@ export const parseStageDirection = (
 				if (!dramatisPersonae.map((c) => c.name).includes(characterName)) {
 					dramatisPersonae.push({
 						name: characterName,
-						words: 0,
+						words: 0
 					});
 				}
 			});
@@ -121,7 +121,7 @@ export const parseStageDirection = (
 			direction,
 			characterNames,
 			timing,
-			stageBefore,
+			stageBefore
 		});
 	}
 };
@@ -132,6 +132,6 @@ export const getNewScene = (partialScene: Partial<Scene> = {}): Scene => {
 		scene: -1,
 		settings: [],
 		steps: [],
-		...partialScene,
+		...partialScene
 	};
 };
