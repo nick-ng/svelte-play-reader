@@ -14,7 +14,7 @@ let storedOptions: Options = {
 	auditionVolume: 0.5,
 	auditionRate: 1,
 	auditionNameFilter: '',
-	auditionPhrase: 'O, the Pelican. So smoothly doth he crest. A wind god!',
+	auditionPhrase: 'O, the Pelican. So smoothly doth he crest. A wind god!'
 };
 
 if (browser) {
@@ -30,7 +30,7 @@ if (browser) {
 		if (storedOptionsString) {
 			storedOptions = {
 				...storedOptions,
-				...JSON.parse(storedOptionsString),
+				...JSON.parse(storedOptionsString)
 			};
 		}
 	} catch (_e) {

@@ -5,12 +5,12 @@ export default {
 		extend: {
 			screens: {
 				'can-hover': { raw: '(hover: hover)' },
-				'cannot-hover': { raw: '(hover: none)' },
+				'cannot-hover': { raw: '(hover: none)' }
 			},
 			flexBasis: {
-				prose: '65ch',
-			},
-		},
+				prose: '65ch'
+			}
+		}
 	},
-	plugins: [],
+	plugins: []
 };

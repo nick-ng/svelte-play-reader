@@ -91,7 +91,7 @@
 								voice,
 								volume,
 								rate: 1,
-								pitch: 1,
+								pitch: 1
 							});
 
 							speakingCharacter = s.character;

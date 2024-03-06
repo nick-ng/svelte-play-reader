@@ -3,7 +3,7 @@ export const playLine = ({
 	voice,
 	volume,
 	rate,
-	pitch,
+	pitch
 }: {
 	phrase: string;
 	voice: ReturnType<typeof speechSynthesis.getVoices>[number] | null;

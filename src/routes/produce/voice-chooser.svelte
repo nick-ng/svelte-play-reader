@@ -15,7 +15,7 @@
 		rate: 1,
 		pitch: 1,
 		gender: 'female',
-		age: 'adult',
+		age: 'adult'
 	};
 
 	let currentRate = castMember?.rate || DEFAULT_CAST_SETTINGS.rate;
@@ -137,7 +137,7 @@
 					gender: currentGender,
 					pitch: currentPitch,
 					rate: currentRate,
-					voiceURI: currentVoiceURI,
+					voiceURI: currentVoiceURI
 				};
 
 				handleSave(newCasting);

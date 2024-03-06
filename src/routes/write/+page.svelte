@@ -16,7 +16,7 @@
 				if (prevProduction) {
 					return {
 						...prevProduction,
-						sourceText: $writerEditorStore,
+						sourceText: $writerEditorStore
 					};
 				}
 
@@ -29,7 +29,7 @@
 					sourceText: $writerEditorStore,
 					cast: [],
 					direction: [],
-					updatedTimestamp: Date.now(),
+					updatedTimestamp: Date.now()
 				};
 			});
 		}}>Save as Current Production</button
