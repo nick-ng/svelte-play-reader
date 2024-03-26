@@ -1,0 +1,1 @@
+import{w as e}from"./index.CyCFjVFR.js";const r="NICK-ACTORS";let o={};try{const t=localStorage.getItem(r);t&&(o=JSON.parse(t))}catch{}const s=e(o);s.subscribe(t=>{localStorage.setItem(r,JSON.stringify(t))});export{s as a};
