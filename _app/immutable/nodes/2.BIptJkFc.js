@@ -1,0 +1,8 @@
+import{s as o,n as a}from"../chunks/scheduler.BpbJffcR.js";import{S as n,i as l,e as c,c as h,g as p,a as u,b as d,d as m}from"../chunks/index.DyKxNZrU.js";function y(r){let e,s=`<h1>Play Reader</h1> <p>Have you ever wondered if “script” as in “computer <em>script</em>ing
+		language” comes from “script” as in “script for a play”?</p> <p>If you&#39;ve ever seen a <a href="https://www.opensourceshakespeare.org/views/plays/play_view.php?WorkID=hamlet&amp;Act=1&amp;Scope=act&amp;pleasewait=1&amp;msg=pl">play’s script</a>, it’s very clear which words indicate that a particular character is speaking and which
+		words are the lines they should say. There are also words that indicate when people enter and
+		leave the stage.</p> <h2>Instructions</h2> <ol class="ml-5 list-decimal"><li>Write your play on the &quot;Write&quot; page. Any changes are saved automatically. Once you are happy
+			with your play, click &quot;Save as Current Production&quot; to save it as your current production. Note
+			that this will overwrite the play that&#39;s currently there.</li> <li>(Optional) Listen to the different voices in the &quot;Audition&quot; page.</li> <li>Assign voices to the different characters on the &quot;Produce&quot; page. If you&#39;ve made notes on the
+			&quot;Audition&quot; page, voices will be sorted first by the gender that matches the character, then by
+			their fluency.</li></ol>`;return{c(){e=c("div"),e.innerHTML=s,this.h()},l(t){e=h(t,"DIV",{class:!0,"data-svelte-h":!0}),p(e)!=="svelte-194k5tk"&&(e.innerHTML=s),this.h()},h(){u(e,"class","max-w-prose")},m(t,i){d(t,e,i)},p:a,i:a,o:a,d(t){t&&m(e)}}}class g extends n{constructor(e){super(),l(this,e,null,y,o,{})}}export{g as component};
