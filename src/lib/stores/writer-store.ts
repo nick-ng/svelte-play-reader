@@ -15,8 +15,8 @@ if (browser) {
 			isNewStore = false;
 			currentWriterEditor = temp;
 		}
-	} catch (_e) {
-		// noop
+	} catch (e) {
+		console.error('error loading editor data', e);
 	}
 }
 

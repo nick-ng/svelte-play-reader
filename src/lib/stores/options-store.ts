@@ -33,8 +33,8 @@ if (browser) {
 				...JSON.parse(storedOptionsString)
 			};
 		}
-	} catch (_e) {
-		// noop
+	} catch (e) {
+		console.error('error loading options', e);
 	}
 }
 
