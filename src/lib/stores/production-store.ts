@@ -27,8 +27,8 @@ if (browser) {
 		if (typeof currentProductionString === 'string') {
 			currentProduction = JSON.parse(currentProductionString);
 		}
-	} catch (_e) {
-		// noop
+	} catch (e) {
+		console.error('error loading productions', e);
 	}
 }
 
@@ -74,7 +74,7 @@ const updateProductionList = async () => {
 				list: productionList
 			}));
 		} catch (e) {
-			// noop
+			console.error('error updating productions', e);
 		}
 	}
 };
@@ -102,7 +102,7 @@ export const setCurrentProduction = async (id: string) => {
 			}));
 		}
 	} catch (e) {
-		// noop
+		console.error('error saving productions', e);
 	}
 };
 

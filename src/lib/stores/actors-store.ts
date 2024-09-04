@@ -17,8 +17,8 @@ if (browser) {
 		if (storedActorsString) {
 			storedActors = JSON.parse(storedActorsString);
 		}
-	} catch (_e) {
-		// noop
+	} catch (e) {
+		console.error('error loading actors', e);
 	}
 }
 
