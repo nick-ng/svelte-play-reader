@@ -1,0 +1,1 @@
+import{w as e}from"./index.CyCFjVFR.js";const t="NICK-ACTORS";let o={};try{const r=localStorage.getItem(t);r&&(o=JSON.parse(r))}catch(r){console.error("error loading actors",r)}const s=e(o);s.subscribe(r=>{localStorage.setItem(t,JSON.stringify(r))});export{s as a};
