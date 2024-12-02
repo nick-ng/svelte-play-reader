@@ -12,7 +12,7 @@
 	<a class="ml-1 rounded border border-gray-300 px-2 py-1" href="/write">Write</a>
 	<a class="ml-1 rounded border border-gray-300 px-2 py-1" href="/audition">Audition</a>
 	<a class="ml-1 rounded border border-gray-300 px-2 py-1" href="/produce">Produce</a>
-	<div class="flex-grow" />
+	<div class="flex-grow"></div>
 	<a
 		class="rounded border border-gray-300 px-2 py-1"
 		href="https://github.com/nick-ng/svelte-play-reader"

@@ -39,7 +39,7 @@
 			<textarea
 				class="mt-1 h-[80ch] w-[65ch] max-w-[48vw] resize-none"
 				bind:value={$writerEditorStore}
-			/>
+			></textarea>
 			<button
 				class="block"
 				type="button"
