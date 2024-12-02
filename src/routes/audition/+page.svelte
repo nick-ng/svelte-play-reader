@@ -55,7 +55,8 @@
 			<div>
 				<label>Filter: <input type="text" bind:value={$optionsStore.auditionNameFilter} /></label>
 				<div class="block">Phrase:</div>
-				<textarea class="block h-40 w-72 resize-none" bind:value={$optionsStore.auditionPhrase} />
+				<textarea class="block h-40 w-72 resize-none" bind:value={$optionsStore.auditionPhrase}
+				></textarea>
 			</div>
 			<div class="ml-2">
 				<button
@@ -63,7 +64,7 @@
 						actorsJsonString = JSON.stringify($actorsStore);
 					}}>Export</button
 				> <button>Import</button>
-				<textarea class="mt-2 block h-40 w-56 resize-none" bind:value={actorsJsonString} />
+				<textarea class="mt-2 block h-40 w-56 resize-none" bind:value={actorsJsonString}></textarea>
 			</div>
 		</div>
 		<div>
