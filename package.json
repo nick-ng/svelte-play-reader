@@ -14,7 +14,7 @@
 		"l": "npm run format && npm run lint && npm run check"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^6.1.1",
+		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.49.2",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
